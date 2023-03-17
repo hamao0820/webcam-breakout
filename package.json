@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch",
-    "dev": "npm run watch & live-server --open='./dist/index.html'"
+    "dev": "npm run watch & live-server --open='./dist/index.html' --watch='./src'"
   },
   "keywords": [],
   "author": "hamao",
