@@ -4,4 +4,3 @@ import "./scss/style.scss";
 
 new Game();
 const webcam = new Webcam();
-
