@@ -46,4 +46,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
+  watchOptions: {
+    ignored: [".git/**", "node_modules"]
+  }
 };
