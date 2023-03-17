@@ -3,6 +3,14 @@
     padding: 0;
 }
 
+.webcam-container {
+    #monitor {
+        width: 300px;
+        transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+    }
+}
+
 #game {
     background: #eee;
     display: block;
