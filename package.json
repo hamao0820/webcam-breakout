@@ -6,10 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "dev": "npm run watch & live-server --open='./dist/index.html'"
   },
   "keywords": [],
-  "author": "",
+  "author": "hamao",
   "license": "ISC",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",

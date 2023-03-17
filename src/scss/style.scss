@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#game {
+    background: #eee;
+    display: block;
+    margin: 0 auto;
+}
+
+.button-container {
+    margin-top: 30px;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+
+    button {
+        font-size: large;
+        margin: 0 30px;
+        padding: 5px;
+    }
+}
