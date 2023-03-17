@@ -17,13 +17,9 @@ class TruncatedMobileNet extends tf.LayersModel {
 
 class Model extends tf.Sequential {
     private static readonly NUM_CLASSES = 2;
-    private constructor(args: tf.SequentialArgs) {
-        super(args);
-    }
-
-    static async build(units: number) {
-        const truncatedMobileNet = await TruncatedMobileNet.build();
-        return new Model({
+    private readonly truncatedMobileNet: TruncatedMobileNet;
+    private constructor(truncatedMobileNet: TruncatedMobileNet, units: number) {
+        super({
             layers: [
                 tf.layers.flatten({ inputShape: truncatedMobileNet.outputs[0].shape.slice(1) }),
                 tf.layers.dense({
@@ -33,13 +29,26 @@ class Model extends tf.Sequential {
                     useBias: true,
                 }),
                 tf.layers.dense({
-                    units: this.NUM_CLASSES,
+                    units: Model.NUM_CLASSES,
                     kernelInitializer: "varianceScaling",
                     useBias: false,
                     activation: "softmax",
                 }),
             ],
         });
+        this.truncatedMobileNet = truncatedMobileNet;
+    }
+
+    static async build(units: number) {
+        const truncatedMobileNet = await TruncatedMobileNet.build();
+        return new Model(truncatedMobileNet, units);
+    }
+
+    // Warm up the model. This uploads weights to the GPU and compiles the WebGL
+    // programs so the first time we collect data from the webcam it will be
+    // quick.
+    init(x: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[]) {
+        this.truncatedMobileNet.predict(x);
     }
 }
 
