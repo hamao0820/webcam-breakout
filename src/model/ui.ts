@@ -111,8 +111,8 @@ class Ui {
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
             await Promise.all([forThumb(), forDataset()]);
-            this.dataSizeLeft.innerHTML = String(controllerDataset.dataSize[0]);
-            this.dataSizeRight.innerHTML = String(controllerDataset.dataSize[1]);
+            this.dataSizeLeft.innerHTML = String(controllerDataset.classSizes[0]);
+            this.dataSizeRight.innerHTML = String(controllerDataset.classSizes[1]);
         }
     }
 

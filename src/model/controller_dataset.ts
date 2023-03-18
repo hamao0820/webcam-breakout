@@ -1,14 +1,12 @@
 import * as tf from "@tensorflow/tfjs";
-import { Tensor4D, Tensor2D, Rank, Tensor } from "@tensorflow/tfjs";
+import { Tensor4D, Tensor2D } from "@tensorflow/tfjs";
 
 class ControllerDataset {
     private readonly numClasses: number;
-    readonly #dataSize: number[];
-    private xs: Tensor4D | null;
+    xs: Tensor4D | null;
     private ys: Tensor2D | null;
     constructor(numClasses: number) {
         this.numClasses = numClasses;
-        this.#dataSize = new Array(numClasses).fill(0);
         this.xs = null;
         this.ys = null;
     }
@@ -39,11 +37,21 @@ class ControllerDataset {
             oldY.dispose();
             y.dispose();
         }
-        this.#dataSize[label] += 1;
+    }
+
+    get classSizes() {
+        if (!this.ys) return new Array(this.numClasses).fill(0);
+        const ysData = this.ys.arraySync() as number[][];
+        const sizes = new Array(this.numClasses).fill(0);
+        ysData.forEach((y) => {
+            sizes[y.indexOf(1)]++;
+        });
+        return sizes;
     }
 
     get dataSize() {
-        return this.#dataSize;
+        if (!this.xs) return 0;
+        return this.xs.shape[0];
     }
 }
 
