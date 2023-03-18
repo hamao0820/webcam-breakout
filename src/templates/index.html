@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -29,11 +29,23 @@
             <div class="dropdown">
                 <label>Batch size</label>
                 <div class="select">
-                    <select id="batch-size">
+                    <select id="batch-size-fraction">
                         <option value="0.05">0.05</option>
                         <option value="0.1">0.1</option>
                         <option selected value="0.4">0.4</option>
                         <option value="1">1</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Epochs -->
+            <div class="dropdown">
+                <label>Epochs</label>
+                <div class="select">
+                    <select id="epochs">
+                        <option value="10">10</option>
+                        <option selected value="20">20</option>
+                        <option value="40">40</option>
                     </select>
                 </div>
             </div>
@@ -53,19 +65,24 @@
         <!-- /.hyper-param -->
 
         <div id="controller">
-            <div class="thumb">
-                <canvas class="left" height="128px" width="128px"></canvas>
+            <div class="thumb-box">
+                <button id="button-left">
+                    <canvas class="thumb" id="thumb-left" height="128px" width="128px"></canvas>
+                </button>
             </div>
             <div class="arrow">
-                <img src="/src/images/arrowLeft.svg" class="left" />
+                <img src="/src/images/arrowLeft.svg" id="arrow-left" />
             </div>
             <div class="arrow">
-                <img src="/src/images/arrowRight.svg" class="right" />
+                <img src="/src/images/arrowRight.svg" id="arrow-right" />
             </div>
-            <div class="thumb">
-                <canvas class="right" height="128px" width="128px"></canvas>
+            <div class="thumb-box">
+                <button id="button-right">
+                    <canvas class="thumb" id="thumb-right" height="128px" width="128px"></canvas>
+                </button>
             </div>
-        </div><!-- /#controller -->
+        </div>
+        <!-- /#controller -->
 
         <div class="training-butotns">
             <button class="train">
