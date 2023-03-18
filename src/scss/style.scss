@@ -11,6 +11,21 @@
     }
 }
 
+#controller {
+    display: flex;
+
+    .thumb {
+        width: fit-content;
+        height: fit-content;
+    }
+    .arrow {
+        img {
+            width: 128px;
+            height: 128px;
+        }
+    }
+}
+
 #game {
     background: #eee;
     display: block;

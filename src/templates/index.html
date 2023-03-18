@@ -10,6 +10,69 @@
         <div class="webcam-container">
             <video id="monitor"></video>
         </div>
+        <div id="status">Loading mobilenet...</div>
+        <div class="hyper-param">
+            <!-- Learning rate -->
+            <div class="dropdown">
+                <label>learning rate</label>
+                <div class="select">
+                    <select id="learnig-rate">
+                        <option value="0.00001">0.00001</option>
+                        <option selected value="0.0001">0.0001</option>
+                        <option value="0.01">0.001</option>
+                        <option value="0.03">0.003</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Batch size -->
+            <div class="dropdown">
+                <label>Batch size</label>
+                <div class="select">
+                    <select id="batch-size">
+                        <option value="0.05">0.05</option>
+                        <option value="0.1">0.1</option>
+                        <option selected value="0.4">0.4</option>
+                        <option value="1">1</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Hidden units -->
+            <div class="dropdown">
+                <label>Hidden units</label>
+                <div class="select">
+                    <select id="dense-units">
+                        <option value="10">10</option>
+                        <option selected value="100">100</option>
+                        <option value="200">200</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- /.hyper-param -->
+
+        <div id="controller">
+            <div class="thumb">
+                <canvas class="left" height="128px" width="128px"></canvas>
+            </div>
+            <div class="arrow">
+                <img src="/src/images/arrowLeft.svg" class="left" />
+            </div>
+            <div class="arrow">
+                <img src="/src/images/arrowRight.svg" class="right" />
+            </div>
+            <div class="thumb">
+                <canvas class="right" height="128px" width="128px"></canvas>
+            </div>
+        </div><!-- /#controller -->
+
+        <div class="training-butotns">
+            <button class="train">
+                <span class="train-status">学習開始</span>
+            </button>
+        </div>
+
         <canvas id="game" width="480" height="380"></canvas>
         <div class="button-container">
             <div>
