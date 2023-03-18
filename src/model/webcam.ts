@@ -7,17 +7,17 @@ class Webcam {
     constructor() {
         const monitor = document.querySelector<HTMLVideoElement>("#monitor");
         if (!monitor) throw Error("#webcamが存在しません");
-        this.#webcam = tfd.webcam(monitor);
+        this.#webcam = tfd.webcam(monitor, { resizeWidth: monitor.width, resizeHeight: monitor.height });
     }
 
-    private async getImage() {
+    async getImage() {
         const image = await (await this.#webcam).capture();
-        return tf.reverse(image);
+        return image;
     }
 
     async getProcessedImage() {
         const image = await this.getImage();
-        const processedImage = tf.tidy(() => image.expandDims(0).toFloat().div(127).sub(1));
+        const processedImage = tf.tidy<tf.Tensor4D>(() => image.expandDims(0).toFloat().div(127).sub(1));
         image.dispose();
         return processedImage;
     }
