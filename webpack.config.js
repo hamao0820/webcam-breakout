@@ -19,7 +19,7 @@ module.exports = {
         use: "ts-loader",
       },
       {
-        test: /\.(css|sass|scss)/,
+        test: /\.(css|sass|scss)$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -34,16 +34,15 @@ module.exports = {
       },
       {
         //拡張子がpng,jpg,gif,svgを検知したら
-        test: /\.(png|jpg|gif|svg)/,
-        use: [
-            {
+        test: /\.(png|jpg|gif|svg)$/,
+        use:{
                 loader: 'file-loader',
                 options: {
-                    //[name]は画像名、[ext]は拡張子
-                    name: 'images/[name].[ext]'
+                    name: '[name].[ext]',
+                    outputPath: "images",
+                    publicPath: "images"
                 }
-            }
-        ]
+        }
       }
     ],
   },
