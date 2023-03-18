@@ -12,4 +12,5 @@ const webcam = new Webcam();
 //     console.log(model);
 // };
 // main();
-// const ui = new Ui(webcam);
+const controllerDataset = new ControllerDataset(2);
+const ui = new Ui(webcam, controllerDataset);

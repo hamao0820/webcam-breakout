@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="webcam-container">
-            <video id="monitor"></video>
+            <video id="monitor" width="196px" height="196px"></video>
         </div>
         <div id="status">Loading mobilenet...</div>
         <div class="hyper-param">
@@ -69,6 +69,10 @@
                 <button id="button-left">
                     <canvas class="thumb" id="thumb-left" height="128px" width="128px"></canvas>
                 </button>
+                <div class="data-size-area">
+                    <span class="data-size" id="left-size">0</span>
+                    examples
+                </div>
             </div>
             <div class="arrow">
                 <img src="<%=require('../images/arrowLeft.svg').default%>" id="arrow-left" />
@@ -78,6 +82,10 @@
                 <button id="button-right">
                     <canvas class="thumb" id="thumb-right" height="128px" width="128px"></canvas>
                 </button>
+                <div class="data-size-area">
+                    <span class="data-size" id="right-size">0</span>
+                    examples
+                </div>
             </div>
         </div>
         <!-- /#controller -->
