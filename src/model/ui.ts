@@ -1,5 +1,4 @@
 import ModelController from "./ModelController";
-import ControllerDataset from "./controller_dataset";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
@@ -61,12 +60,7 @@ class Ui {
         statusElement.remove();
     }
 
-    private async buttonHandler(
-        canvas: HTMLCanvasElement,
-        controllerDataset: ControllerDataset,
-        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
-        label: number
-    ) {
+    private async buttonHandler(canvas: HTMLCanvasElement, label: number) {
         this.mouseDown = true;
         const forThumb = async () => {
             const image = await this.webcam.getImage();
@@ -79,7 +73,10 @@ class Ui {
         };
         const forDataset = async () => {
             const processedImage = await this.webcam.getProcessedImage();
-            controllerDataset.addTrainData(embedding(processedImage) as Tensor4D, label);
+            this.modelController.controllerDataset.addTrainData(
+                this.modelController.embedding(processedImage) as Tensor4D,
+                label
+            );
         };
 
         const dataSizeLeft = this.getElementByIdAndCheckExist<HTMLSpanElement>("left-size");
@@ -88,8 +85,8 @@ class Ui {
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
             await Promise.all([forThumb(), forDataset()]);
-            dataSizeLeft.innerHTML = String(controllerDataset.classSizes[0]);
-            dataSizeRight.innerHTML = String(controllerDataset.classSizes[1]);
+            dataSizeLeft.innerHTML = String(this.modelController.controllerDataset.classSizes[0]);
+            dataSizeRight.innerHTML = String(this.modelController.controllerDataset.classSizes[1]);
         }
     }
 
@@ -102,12 +99,7 @@ class Ui {
         trainStatusElement.innerHTML = status;
     }
 
-    init(
-        train: (units: number) => void,
-        controllerDataset: ControllerDataset,
-        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
-        predict: () => void
-    ) {
+    init(predict: () => void) {
         const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
         const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
         if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
@@ -123,11 +115,11 @@ class Ui {
         });
         const buttonHandlerLeft = async () => {
             const label = 0;
-            await this.buttonHandler(this.thumbCanvasLeft, controllerDataset, embedding, label);
+            await this.buttonHandler(this.thumbCanvasLeft, label);
         };
         const buttonHandlerRight = async () => {
             const label = 1;
-            await this.buttonHandler(this.thumbCanvasRight, controllerDataset, embedding, label);
+            await this.buttonHandler(this.thumbCanvasRight, label);
         };
 
         const mouseUpHandler = () => {

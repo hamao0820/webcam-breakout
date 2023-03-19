@@ -7,13 +7,17 @@ import { EventEmitter } from "events";
 
 class ModelController extends EventEmitter {
     private model: LayersModel | null = null;
-    private readonly controllerDataset: ControllerDataset;
+    readonly controllerDataset: ControllerDataset;
     constructor(webcam: Webcam) {
         super();
         Model.init(webcam).then(() => {
             console.log("mobileNetの読み込みが完了しました");
         });
         this.controllerDataset = new ControllerDataset(2);
+    }
+
+    embedding(image: tf.Tensor4D) {
+        return Model.embedding(image);
     }
 
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {
