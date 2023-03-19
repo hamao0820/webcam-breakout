@@ -7,8 +7,6 @@ class Ui {
     private readonly trainStatusElement: HTMLSpanElement;
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
-    private readonly contextLeft: CanvasRenderingContext2D;
-    private readonly contextRight: CanvasRenderingContext2D;
 
     private readonly webcam: Webcam;
     private mouseDown: boolean;
@@ -24,10 +22,6 @@ class Ui {
         };
         const nullKey = (Object.keys(elements) as (keyof typeof elements)[]).find((key) => !elements[key]);
         if (nullKey) throw Error(`${nullKey}が存在しません`);
-
-        this.contextLeft = this.thumbCanvasLeft.getContext("2d") as CanvasRenderingContext2D;
-        this.contextRight = this.thumbCanvasRight.getContext("2d") as CanvasRenderingContext2D;
-        if (!this.contextLeft || !this.contextRight) throw Error("コンテキストが存在しません");
 
         this.webcam = webcam;
         this.mouseDown = false;
@@ -114,8 +108,8 @@ class Ui {
         const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
         const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
         if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
-        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button")
-        
+        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
+
         trainButton.addEventListener("click", () => {
             train(this.getDenseUnits());
         });
