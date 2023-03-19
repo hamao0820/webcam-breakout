@@ -8,6 +8,7 @@ import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
+    private readonly buttonTrain: HTMLButtonElement;
 
     private readonly modelController: ModelController;
     private readonly webcam: Webcam;
@@ -30,7 +31,7 @@ class Ui {
         const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
         const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
         if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
-        const trainButton = this.getElementByIdAndCheckExists<HTMLButtonElement>("train-button");
+        this.buttonTrain = this.getElementByIdAndCheckExists<HTMLButtonElement>("train-button");
 
         this.modelController = modelController;
         this.modelController.on("batchEnd", ({ loss }) => {
@@ -39,7 +40,7 @@ class Ui {
         this.modelController.on("modelInit", this.doneLoading.bind(this));
         this.modelController.on("trainDone", this.enablePredict.bind(this));
 
-        trainButton.addEventListener("click", () => {
+        this.buttonTrain.addEventListener("click", () => {
             this.modelController.train(
                 this.getDenseUnits(),
                 this.getLeaningRate(),
@@ -99,6 +100,7 @@ class Ui {
 
     private async buttonHandler(canvas: HTMLCanvasElement, label: number) {
         this.mouseDown = true;
+        this.buttonTrain.removeAttribute("disabled");
         const forThumb = async () => {
             const image = await this.webcam.getImage();
             const thumbImage = tf.tidy<Tensor3D>(() =>
