@@ -48,23 +48,26 @@ class Ui {
                 this.getEpochs()
             );
         });
-        const buttonHandlerLeft = async () => {
-            const label = 0;
-            await this.buttonHandler(this.thumbCanvasLeft, label);
-        };
-        const buttonHandlerRight = async () => {
-            const label = 1;
-            await this.buttonHandler(this.thumbCanvasRight, label);
-        };
+        
+        tf.ready().then(() => {
+            const buttonHandlerLeft = async () => {
+                const label = 0;
+                await this.buttonHandler(this.thumbCanvasLeft, label);
+            };
+            const buttonHandlerRight = async () => {
+                const label = 1;
+                await this.buttonHandler(this.thumbCanvasRight, label);
+            };
 
-        const mouseUpHandler = () => {
-            this.mouseDown = false;
-        };
+            const mouseUpHandler = () => {
+                this.mouseDown = false;
+            };
 
-        controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
-        controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
-        controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
-        controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
+            controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
+            controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
+            controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
+            controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
+        });
     }
 
     private getElementByIdAndCheckExists<T extends HTMLElement>(id: string) {
