@@ -2,7 +2,7 @@ import ModelController from "./ModelController";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
-import { EventEmitter } from "events";
+// import { EventEmitter } from "events";
 
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
@@ -108,10 +108,7 @@ class Ui {
         };
         const forDataset = async () => {
             const processedImage = await this.webcam.getProcessedImage();
-            this.modelController.controllerDataset.addTrainData(
-                this.modelController.embedding(processedImage) as Tensor4D,
-                label
-            );
+            this.modelController.addTrainData(processedImage, label);
         };
 
         const dataSizeLeft = this.getElementByIdAndCheckExists<HTMLSpanElement>("left-size");
@@ -137,7 +134,7 @@ class Ui {
     private enablePredict() {
         const buttonPredict = this.getElementByIdAndCheckExists<HTMLButtonElement>("predict-button");
         // buttonPredict.addEventListener("click", () => this.modelController.predict());
-        buttonPredict.removeAttribute("disabled")
+        buttonPredict.removeAttribute("disabled");
     }
 }
 

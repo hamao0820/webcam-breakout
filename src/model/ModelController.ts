@@ -51,6 +51,10 @@ class ModelController extends EventEmitter {
         return Model.embedding(image);
     }
 
+    addTrainData(image: Tensor4D, label: number) {
+        this.controllerDataset.addTrainData(this.embedding(image) as Tensor4D, label);
+    }
+
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {
         this.model = await Model.build(units);
         if (!this.model) throw Error("先にビルドをしてください。`modelController.build(units: number)`");
