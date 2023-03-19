@@ -40,9 +40,7 @@ class ModelController extends EventEmitter {
             callbacks: {
                 onBatchEnd: async (batch: number, logs) => {
                     if (!logs) return;
-                    console.log(batch);
-                    // this.emit("batchEnd", logs.loss.toFixed(5));
-                    // this.ui.setTrainStatus("Loss: " + logs.loss.toFixed(5));
+                    this.emit("batchEnd", logs.loss.toFixed(5));
                 },
             },
         });

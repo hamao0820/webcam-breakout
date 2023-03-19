@@ -26,6 +26,9 @@ class Ui {
         this.mouseDown = false;
 
         this.modelController = modelController;
+        this.modelController.on("batchEnd", (loss: string) => {
+            this.setTrainStatus(`Loss: ${loss}`);
+        });
     }
 
     private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
