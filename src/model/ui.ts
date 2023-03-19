@@ -9,8 +9,6 @@ class Ui {
     private readonly epochsElement: HTMLSelectElement;
     private readonly denseUnitsElement: HTMLSelectElement;
     private readonly trainStatusElement: HTMLSpanElement;
-    private readonly controllerButtonLeft: HTMLButtonElement;
-    private readonly controllerButtonRight: HTMLButtonElement;
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
     private readonly contextLeft: CanvasRenderingContext2D;
@@ -30,8 +28,6 @@ class Ui {
         this.epochsElement = document.getElementById("epochs") as HTMLSelectElement;
         this.denseUnitsElement = document.getElementById("dense-units") as HTMLSelectElement;
         this.trainStatusElement = document.getElementById("train-status") as HTMLSpanElement;
-        this.controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
-        this.controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         this.dataSizeLeft = document.getElementById("left-size") as HTMLSpanElement;
@@ -43,8 +39,6 @@ class Ui {
             epochsElement: this.epochsElement,
             denseUnitsElement: this.denseUnitsElement,
             trainStatusElement: this.trainStatusElement,
-            controllerButtonLeft: this.controllerButtonLeft,
-            controllerButtonRight: this.controllerButtonRight,
             thumbCanvasLeft: this.thumbCanvasLeft,
             thumbCanvasRight: this.thumbCanvasRight,
             dataSizeLeft: this.dataSizeLeft,
@@ -123,6 +117,10 @@ class Ui {
         embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
         predict: () => void
     ) {
+        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
+        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
+        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
+
         this.trainButton.addEventListener("click", () => {
             train(this.getDenseUnits());
         });
@@ -143,10 +141,10 @@ class Ui {
         if (!buttonPredict) throw Error("要素が存在しません");
         buttonPredict.addEventListener("click", predict);
 
-        this.controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
-        this.controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
-        this.controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
-        this.controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
+        controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
+        controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
+        controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
+        controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
     }
 }
 
