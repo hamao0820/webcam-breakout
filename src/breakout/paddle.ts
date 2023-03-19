@@ -1,6 +1,6 @@
-import Ball, { Angle } from './ball';
-import GameObject, { Bouncy, CollisionRect } from './game';
-import { checkIntervalsIntersect } from './index';
+import { checkIntervalsIntersect } from "./Breakout";
+import Ball, { Angle } from "./ball";
+import GameObject, { Bouncy, CollisionRect } from "./game";
 
 class Paddle implements GameObject, Bouncy {
     x: number;
@@ -10,7 +10,7 @@ class Paddle implements GameObject, Bouncy {
     readonly dxAbs = 7;
     dx: number;
     constructor(x: number, y: number, height: number, width: number) {
-        if (height < 0 || width < 0) throw Error('height and width of paddle must be positive.');
+        if (height < 0 || width < 0) throw Error("height and width of paddle must be positive.");
         this.x = x;
         this.y = y;
         this.height = height;
@@ -20,7 +20,7 @@ class Paddle implements GameObject, Bouncy {
     draw(ctx: CanvasRenderingContext2D) {
         ctx.beginPath();
         ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = '#0095DD';
+        ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
     }

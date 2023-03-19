@@ -1,4 +1,4 @@
-import Game from "./breakout";
+import Breakout from "./breakout/Breakout";
 import ModelController from "./model/ModelController";
 import Model from "./model/model";
 import Ui from "./model/ui";
@@ -11,9 +11,9 @@ class Main {
     private readonly ui: Ui;
 
     constructor() {
-        const game = new Game();
+        const breakout = new Breakout();
         this.modelController = new ModelController();
-        this.ui = new Ui(this.modelController, game);
+        this.ui = new Ui(this.modelController, breakout);
     }
 
     async init() {

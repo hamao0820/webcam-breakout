@@ -12,7 +12,7 @@ export const checkIntervalsIntersect = (
     return firstInterval[1] >= secondInterval[0];
 };
 
-class Game {
+class Breakout {
     readonly canvas: HTMLCanvasElement;
     readonly ctx: CanvasRenderingContext2D;
     private readonly model: Model;
@@ -40,7 +40,7 @@ class Game {
     }
 
     init() {
-        return new Game();
+        return new Breakout();
     }
 
     private step() {
@@ -76,4 +76,4 @@ class Game {
     }
 }
 
-export default Game;
+export default Breakout;

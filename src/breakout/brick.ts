@@ -1,6 +1,6 @@
 import Ball from './ball';
 import GameObject, { Bouncy } from './game';
-import { checkIntervalsIntersect } from './index';
+import { checkIntervalsIntersect } from './Breakout';
 
 class Brick implements GameObject, Bouncy {
     x: number;

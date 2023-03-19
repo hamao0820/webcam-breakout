@@ -1,4 +1,4 @@
-import Game from "../breakout";
+import Breakout from "../breakout/Breakout";
 import ModelController from "./ModelController";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
@@ -13,11 +13,11 @@ class Ui {
 
     private readonly modelController: ModelController;
     private readonly webcam: Webcam;
-    private game: Game;
+    private breakout: Breakout;
 
     private mouseDown: boolean;
 
-    constructor(modelController: ModelController, game: Game) {
+    constructor(modelController: ModelController, breakout: Breakout) {
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         const elements = {
@@ -74,18 +74,18 @@ class Ui {
         const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
         const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
 
-        this.game = game;
+        this.breakout = breakout;
         const start = () => {
-            this.game.start();
+            this.breakout.start();
         };
         const reset = () => {
             buttonStart.removeEventListener("click", start.bind(this));
             buttonRetry.removeEventListener("click", retry.bind(this));
         };
         const retry = () => {
-            this.game.gameOver();
+            this.breakout.gameOver();
             reset();
-            this.game = this.game.init();
+            this.breakout = this.breakout.init();
         };
         buttonStart.addEventListener("click", start);
         buttonStart.addEventListener("click", () => {
