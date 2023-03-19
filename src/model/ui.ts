@@ -1,16 +1,19 @@
+import ModelController, { ModelControllerEvent } from "./ModelController";
 import ControllerDataset from "./controller_dataset";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
+import { EventEmitter } from "events";
 
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
+    private readonly modelController: ModelController;
 
     private readonly webcam: Webcam;
     private mouseDown: boolean;
 
-    constructor(webcam: Webcam) {
+    constructor(webcam: Webcam, modelController: ModelController) {
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         const elements = {
@@ -22,6 +25,9 @@ class Ui {
 
         this.webcam = webcam;
         this.mouseDown = false;
+
+        this.modelController = modelController;
+
     }
 
     private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
@@ -109,7 +115,14 @@ class Ui {
         const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
 
         trainButton.addEventListener("click", () => {
-            train(this.getDenseUnits());
+            this.modelController.emit(
+                "train",
+                this.getDenseUnits(),
+                this.getLeaningRate(),
+                this.getBatchSizeFraction(),
+                this.getEpochs()
+            );
+            // train(this.getDenseUnits());
         });
         const buttonHandlerLeft = async () => {
             const label = 0;

@@ -6,6 +6,7 @@ import Webcam from "./model/webcam";
 import "./scss/style.scss";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D } from "@tensorflow/tfjs";
+import ModelController from "./model/ModelController";
 
 class Main {
     private readonly webcam: Webcam;
@@ -16,7 +17,8 @@ class Main {
     constructor() {
         this.webcam = new Webcam();
         this.controllerDataset = new ControllerDataset(2);
-        this.ui = new Ui(this.webcam);
+        const modelController = new ModelController(this.webcam)
+        this.ui = new Ui(this.webcam, modelController);
     }
 
     async init() {
