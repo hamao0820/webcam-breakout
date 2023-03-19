@@ -9,7 +9,6 @@ class Ui {
     private readonly thumbCanvasRight: HTMLCanvasElement;
     private readonly contextLeft: CanvasRenderingContext2D;
     private readonly contextRight: CanvasRenderingContext2D;
-    private readonly trainButton: HTMLButtonElement;
 
     private readonly webcam: Webcam;
     private mouseDown: boolean;
@@ -18,12 +17,10 @@ class Ui {
         this.trainStatusElement = document.getElementById("train-status") as HTMLSpanElement;
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
-        this.trainButton = document.getElementById("train-button") as HTMLButtonElement;
         const elements = {
             trainStatusElement: this.trainStatusElement,
             thumbCanvasLeft: this.thumbCanvasLeft,
             thumbCanvasRight: this.thumbCanvasRight,
-            trainButton: this.trainButton,
         };
         const nullKey = (Object.keys(elements) as (keyof typeof elements)[]).find((key) => !elements[key]);
         if (nullKey) throw Error(`${nullKey}が存在しません`);
@@ -117,8 +114,9 @@ class Ui {
         const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
         const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
         if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
-
-        this.trainButton.addEventListener("click", () => {
+        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button")
+        
+        trainButton.addEventListener("click", () => {
             train(this.getDenseUnits());
         });
         const buttonHandlerLeft = async () => {
