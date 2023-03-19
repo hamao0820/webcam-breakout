@@ -74,6 +74,12 @@ class Ui {
         return +this.denseUnitsElement.value;
     }
 
+    doneLoading() {
+        const statusElement = document.getElementById("loading-status") as HTMLDivElement;
+        if (!statusElement) throw Error("div#loading-statusがありません");
+        statusElement.remove()
+    }
+
     private async buttonHandler(
         canvas: HTMLCanvasElement,
         controllerDataset: ControllerDataset,

@@ -22,6 +22,7 @@ class Main {
     async init() {
         await Model.init(this.webcam);
         if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
+        this.ui.doneLoading()
         this.ui.init(
             this.train.bind(this),
             this.controllerDataset,
