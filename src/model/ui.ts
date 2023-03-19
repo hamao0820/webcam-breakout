@@ -51,6 +51,9 @@ class Ui {
             );
         });
 
+        this.breakout = breakout;
+        const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
+        const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
         tf.ready().then(() => {
             const buttonHandlerLeft = async () => {
                 const label = 0;
@@ -69,33 +72,29 @@ class Ui {
             controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
             controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
             controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
-        });
 
-        const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
-        const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
-
-        this.breakout = breakout;
-        const start = () => {
-            this.breakout.start();
-        };
-        const reset = () => {
-            buttonStart.removeEventListener("click", start.bind(this));
-            buttonRetry.removeEventListener("click", retry.bind(this));
-        };
-        const retry = () => {
-            this.breakout.gameOver();
-            reset();
-            this.breakout = this.breakout.init();
-        };
-        buttonStart.addEventListener("click", start);
-        buttonStart.addEventListener("click", () => {
-            buttonStart.setAttribute("disabled", "true");
-            buttonRetry.removeAttribute("disabled");
-        });
-        buttonRetry.addEventListener("click", retry);
-        buttonRetry.addEventListener("click", () => {
-            buttonStart.removeAttribute("disabled");
-            buttonRetry.setAttribute("disabled", "true");
+            const start = () => {
+                this.breakout.start();
+            };
+            const reset = () => {
+                buttonStart.removeEventListener("click", start.bind(this));
+                buttonRetry.removeEventListener("click", retry.bind(this));
+            };
+            const retry = () => {
+                this.breakout.gameOver();
+                reset();
+                this.breakout = this.breakout.init();
+            };
+            buttonStart.addEventListener("click", start);
+            buttonStart.addEventListener("click", () => {
+                buttonStart.setAttribute("disabled", "true");
+                buttonRetry.removeAttribute("disabled");
+            });
+            buttonRetry.addEventListener("click", retry);
+            buttonRetry.addEventListener("click", () => {
+                buttonStart.removeAttribute("disabled");
+                buttonRetry.setAttribute("disabled", "true");
+            });
         });
     }
 
@@ -187,13 +186,8 @@ class Ui {
     }
 
     private enablePredict() {
-        const buttonPredict = this.getElementByIdAndCheckExists<HTMLButtonElement>("predict-button");
-        buttonPredict.addEventListener("click", async () => {
-            const image = await this.webcam.getProcessedImage();
-            await this.modelController.predict(image);
-            image.dispose();
-        });
-        buttonPredict.removeAttribute("disabled");
+        const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
+        buttonStart.removeAttribute("disabled");
     }
 }
 
