@@ -4,10 +4,6 @@ import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
 class Ui {
-    private readonly learningRateElement: HTMLSelectElement;
-    private readonly batchSizeFractionElement: HTMLSelectElement;
-    private readonly epochsElement: HTMLSelectElement;
-    private readonly denseUnitsElement: HTMLSelectElement;
     private readonly trainStatusElement: HTMLSpanElement;
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
@@ -23,10 +19,6 @@ class Ui {
     private mouseDown: boolean;
 
     constructor(webcam: Webcam) {
-        this.learningRateElement = document.getElementById("learning-rate") as HTMLSelectElement;
-        this.batchSizeFractionElement = document.getElementById("batch-size-fraction") as HTMLSelectElement;
-        this.epochsElement = document.getElementById("epochs") as HTMLSelectElement;
-        this.denseUnitsElement = document.getElementById("dense-units") as HTMLSelectElement;
         this.trainStatusElement = document.getElementById("train-status") as HTMLSpanElement;
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
@@ -34,10 +26,6 @@ class Ui {
         this.dataSizeRight = document.getElementById("right-size") as HTMLSpanElement;
         this.trainButton = document.getElementById("train-button") as HTMLButtonElement;
         const elements = {
-            learningRateElement: this.learningRateElement,
-            batchSizeFractionElement: this.batchSizeFractionElement,
-            epochsElement: this.epochsElement,
-            denseUnitsElement: this.denseUnitsElement,
             trainStatusElement: this.trainStatusElement,
             thumbCanvasLeft: this.thumbCanvasLeft,
             thumbCanvasRight: this.thumbCanvasRight,
@@ -58,26 +46,36 @@ class Ui {
         this.mouseDown = false;
     }
 
+    private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
+        const element = document.getElementById(id) as T;
+        if (!element) throw Error(`#${id}が存在しません`);
+        return element;
+    }
+
     getLeaningRate() {
-        return +this.learningRateElement.value;
+        const learningRateElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("learning-rate");
+        return +learningRateElement.value;
     }
 
     getBatchSizeFraction() {
-        return +this.batchSizeFractionElement.value;
+        const batchSizeFractionElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("batch-size-fraction");
+        return +batchSizeFractionElement.value;
     }
 
     getEpochs() {
-        return +this.epochsElement.value;
+        const epochsElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("epochs");
+        return +epochsElement.value;
     }
 
     getDenseUnits() {
-        return +this.denseUnitsElement.value;
+        const denseUnitsElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("dense-units");
+        return +denseUnitsElement.value;
     }
 
     doneLoading() {
         const statusElement = document.getElementById("loading-status") as HTMLDivElement;
         if (!statusElement) throw Error("div#loading-statusがありません");
-        statusElement.remove()
+        statusElement.remove();
     }
 
     private async buttonHandler(
