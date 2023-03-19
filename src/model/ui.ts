@@ -2,7 +2,6 @@ import ControllerDataset from "./controller_dataset";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
-import type { LayersModel } from "@tensorflow/tfjs-layers/dist/engine/training";
 
 class Ui {
     private readonly learningRateElement: HTMLSelectElement;
@@ -121,7 +120,8 @@ class Ui {
     init(
         train: (units: number) => void,
         controllerDataset: ControllerDataset,
-        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[]
+        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
+        predict: () => void
     ) {
         this.trainButton.addEventListener("click", () => {
             train(this.getDenseUnits());
@@ -138,6 +138,10 @@ class Ui {
         const mouseUpHandler = () => {
             this.mouseDown = false;
         };
+
+        const buttonPredict = document.getElementById("predict-button") as HTMLButtonElement;
+        if (!buttonPredict) throw Error("要素が存在しません");
+        buttonPredict.addEventListener("click", predict);
 
         this.controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
         this.controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);

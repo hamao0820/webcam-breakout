@@ -5,6 +5,7 @@ import Ui from "./model/ui";
 import Webcam from "./model/webcam";
 import "./scss/style.scss";
 import * as tf from "@tensorflow/tfjs";
+import type { Tensor1D } from "@tensorflow/tfjs";
 
 class Main {
     private readonly webcam: Webcam;
@@ -21,7 +22,12 @@ class Main {
     async init() {
         await Model.init(this.webcam);
         if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
-        this.ui.init(this.train.bind(this), this.controllerDataset, (image: Tensor4D) => Model.embedding(image));
+        this.ui.init(
+            this.train.bind(this),
+            this.controllerDataset,
+            (image: tf.Tensor4D) => Model.embedding(image),
+            this.predict.bind(this)
+        );
     }
 
     private async build(units: number) {
@@ -53,6 +59,17 @@ class Main {
             },
         });
         console.log("学習終了");
+    }
+
+    private async predict() {
+        const image = await this.webcam.getProcessedImage();
+        if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
+        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
+        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
+        image.dispose();
+        predictions.dispose();
+
+        return classId;
     }
 }
 
