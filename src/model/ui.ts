@@ -28,9 +28,8 @@ class Ui {
         this.webcam = new Webcam();
         this.mouseDown = false;
 
-        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
-        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
-        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
+        const controllerButtonLeft = this.getElementByIdAndCheckExists<HTMLButtonElement>("button-left");
+        const controllerButtonRight = this.getElementByIdAndCheckExists<HTMLButtonElement>("button-right");
         this.buttonTrain = this.getElementByIdAndCheckExists<HTMLButtonElement>("train-button");
 
         this.modelController = modelController;
@@ -39,6 +38,7 @@ class Ui {
         });
         this.modelController.on("modelInit", this.doneLoading.bind(this));
         this.modelController.on("trainDone", this.enablePredict.bind(this));
+        this.modelController.on("predict", this.highlightCorrectAnswer.bind(this));
 
         this.buttonTrain.addEventListener("click", () => {
             this.modelController.train(
@@ -96,6 +96,25 @@ class Ui {
     private doneLoading() {
         const statusElement = this.getElementByIdAndCheckExists<HTMLDivElement>("loading-status");
         statusElement.style.setProperty("display", "none");
+    }
+
+    highlightCorrectAnswer({ classId }: { classId: number }) {
+        const thumbBoxLeft = this.getElementByIdAndCheckExists("thumb-box-left");
+        const thumbBoxRight = this.getElementByIdAndCheckExists("thumb-box-right");
+        switch (classId) {
+            case 0: {
+                thumbBoxLeft.classList.add("predicted");
+                thumbBoxRight.classList.remove("predicted");
+                break;
+            }
+            case 1: {
+                thumbBoxRight.classList.add("predicted");
+                thumbBoxLeft.classList.remove("predicted");
+                break;
+            }
+            default:
+                throw Error();
+        }
     }
 
     private async buttonHandler(canvas: HTMLCanvasElement, label: number) {

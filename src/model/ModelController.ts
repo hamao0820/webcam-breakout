@@ -1,7 +1,5 @@
 import ControllerDataset from "./controller_dataset";
 import Model from "./model";
-import Webcam from "./webcam";
-import { LayersModel } from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D, Tensor4D } from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
@@ -10,6 +8,7 @@ export interface ModelControllerEvent {
     batchEnd: { loss: string };
     trainDone: {};
     modelInit: {};
+    predict: { classId: number };
 }
 
 class ModelController extends EventEmitter {
@@ -92,7 +91,7 @@ class ModelController extends EventEmitter {
         const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
         const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
         predictions.dispose();
-        console.log(classId);
+        this.emit("predict", { classId: Number(classId) });
         return classId;
     }
 }
