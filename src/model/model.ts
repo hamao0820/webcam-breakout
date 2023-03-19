@@ -1,5 +1,6 @@
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
+import type { Tensor4D } from "@tensorflow/tfjs";
 import type { ContainerArgs } from "@tensorflow/tfjs-layers/dist/engine/container";
 
 export class TruncatedMobileNet extends tf.LayersModel {
@@ -18,7 +19,7 @@ export class TruncatedMobileNet extends tf.LayersModel {
 
 class Model extends tf.Sequential {
     private static readonly NUM_CLASSES = 2;
-    static #truncatedMobileNet: TruncatedMobileNet | Promise<TruncatedMobileNet> = TruncatedMobileNet.build();
+    static truncatedMobileNet: TruncatedMobileNet | Promise<TruncatedMobileNet> = TruncatedMobileNet.build();
 
     private constructor(truncatedMobileNet: TruncatedMobileNet, units: number) {
         super();
@@ -42,22 +43,29 @@ class Model extends tf.Sequential {
     }
 
     static build(units: number) {
-        if (this.#truncatedMobileNet instanceof Promise)
+        if (this.truncatedMobileNet instanceof Promise)
             throw Error("初期化されていません. `Model.init(webcam: Webcam): Promise<void>`を実行してください。");
-        return new Model(this.#truncatedMobileNet, units);
+        return new Model(this.truncatedMobileNet, units);
     }
 
     // Warm up the model. This uploads weights to the GPU and compiles the WebGL
     // programs so the first time we collect data from the webcam it will be
     // quick.
     static async init(webcam: Webcam) {
-        this.#truncatedMobileNet = await this.#truncatedMobileNet;
+        this.truncatedMobileNet = await this.truncatedMobileNet;
         const screenShot = await webcam.getProcessedImage();
-        this.#truncatedMobileNet.predict(screenShot);
+        this.truncatedMobileNet.predict(screenShot);
         screenShot.dispose();
     }
-    static get truncatedMobileNet() {
-        return this.#truncatedMobileNet;
+
+    static embedding(image: Tensor4D) {
+        if (this.truncatedMobileNet instanceof Promise)
+            throw Error("初期化されていません. `Model.init(webcam: Webcam): Promise<void>`を実行してください。");
+        return this.truncatedMobileNet.predict(image);
+    }
+
+    static isInitialized() {
+        return !(this.truncatedMobileNet instanceof Promise);
     }
 }
 

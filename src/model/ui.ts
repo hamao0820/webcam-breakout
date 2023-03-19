@@ -84,7 +84,7 @@ class Ui {
     private async buttonHandler(
         canvas: HTMLCanvasElement,
         controllerDataset: ControllerDataset,
-        preTrained: LayersModel,
+        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[],
         label: number
     ) {
         this.mouseDown = true;
@@ -99,7 +99,7 @@ class Ui {
         };
         const forDataset = async () => {
             const processedImage = await this.webcam.getProcessedImage();
-            controllerDataset.addTrainData(preTrained.predict(processedImage) as Tensor4D, label);
+            controllerDataset.addTrainData(embedding(processedImage) as Tensor4D, label);
         };
 
         while (this.mouseDown) {
@@ -118,17 +118,21 @@ class Ui {
         this.trainStatusElement.innerHTML = status;
     }
 
-    init(train: (units: number) => void, controllerDataset: ControllerDataset, preTrained: LayersModel) {
+    init(
+        train: (units: number) => void,
+        controllerDataset: ControllerDataset,
+        embedding: (image: Tensor4D) => tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[]
+    ) {
         this.trainButton.addEventListener("click", () => {
             train(this.getDenseUnits());
         });
         const buttonHandlerLeft = async () => {
             const label = 0;
-            await this.buttonHandler(this.thumbCanvasLeft, controllerDataset, preTrained, label);
+            await this.buttonHandler(this.thumbCanvasLeft, controllerDataset, embedding, label);
         };
         const buttonHandlerRight = async () => {
             const label = 1;
-            await this.buttonHandler(this.thumbCanvasRight, controllerDataset, preTrained, label);
+            await this.buttonHandler(this.thumbCanvasRight, controllerDataset, embedding, label);
         };
 
         const mouseUpHandler = () => {

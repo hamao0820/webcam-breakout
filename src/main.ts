@@ -20,8 +20,8 @@ class Main {
 
     async init() {
         await Model.init(this.webcam);
-        if (Model.truncatedMobileNet instanceof Promise) throw Error();
-        this.ui.init(this.train.bind(this), this.controllerDataset, Model.truncatedMobileNet);
+        if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
+        this.ui.init(this.train.bind(this), this.controllerDataset, (image: Tensor4D) => Model.embedding(image));
     }
 
     private async build(units: number) {
