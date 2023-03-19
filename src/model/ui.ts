@@ -26,7 +26,7 @@ class Ui {
         this.mouseDown = false;
 
         this.modelController = modelController;
-        this.modelController.on("batchEnd", (loss: string) => {
+        this.modelController.on("batchEnd", ({ loss }) => {
             this.setTrainStatus(`Loss: ${loss}`);
         });
     }

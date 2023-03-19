@@ -5,6 +5,11 @@ import { LayersModel } from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
 
+
+export interface ModelControllerEvent {
+    batchEnd: { loss: string };
+}
+
 class ModelController extends EventEmitter {
     private model: LayersModel | null = null;
     readonly controllerDataset: ControllerDataset;
@@ -14,6 +19,14 @@ class ModelController extends EventEmitter {
             console.log("mobileNetの読み込みが完了しました");
         });
         this.controllerDataset = new ControllerDataset(2);
+    }
+
+    on<K extends keyof ModelControllerEvent>(event: K, listener: (kwargs: ModelControllerEvent[K]) => void): this {
+        return super.on(event, (kwargs: ModelControllerEvent[K]) => listener(kwargs));
+    }
+
+    emit<K extends keyof ModelControllerEvent>(event: K, kwargs: ModelControllerEvent[K]) {
+        return super.emit(event, kwargs);
     }
 
     embedding(image: tf.Tensor4D) {
@@ -40,7 +53,7 @@ class ModelController extends EventEmitter {
             callbacks: {
                 onBatchEnd: async (batch: number, logs) => {
                     if (!logs) return;
-                    this.emit("batchEnd", logs.loss.toFixed(5));
+                    this.emit("batchEnd", { loss: logs.loss.toFixed(5) });
                 },
             },
         });
