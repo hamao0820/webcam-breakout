@@ -3,25 +3,39 @@ import Model from "./model";
 import Webcam from "./webcam";
 import { LayersModel } from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs";
-import type { Tensor1D } from "@tensorflow/tfjs";
+import type { Tensor1D, Tensor4D } from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
 
 export interface ModelControllerEvent {
     batchEnd: { loss: string };
     trainDone: {};
+    modelInit: {};
 }
 
 class ModelController extends EventEmitter {
-    private model: LayersModel | null = null;
+    private model: Model | null = null;
     readonly controllerDataset: ControllerDataset;
-    private readonly webcam: Webcam;
-    constructor(webcam: Webcam) {
+    constructor() {
         super();
-        this.webcam = webcam;
-        Model.init(this.webcam).then(() => {
-            console.log("mobileNetの読み込みが完了しました");
-        });
         this.controllerDataset = new ControllerDataset(2);
+    }
+
+    async load() {
+        await Model.load();
+        console.log("mobileNetの読み込みが完了しました");
+        this.emit("modelInit");
+    }
+
+    // Warm up the model. This uploads weights to the GPU and compiles the WebGL
+    // programs so the first time we collect data from the webcam it will be
+    // quick.
+    async init() {
+        await this.load();
+        const model = await Model.build(1);
+        // if (!model) throw Error("modelがロードされていません");
+        const randomImage: Tensor4D = tf.randomNormal([1, 224, 224, 3]);
+        Model.embedding(randomImage);
+        randomImage.dispose();
     }
 
     on<K extends keyof ModelControllerEvent>(event: K, listener: (kwargs: ModelControllerEvent[K]) => void): this {
@@ -33,11 +47,12 @@ class ModelController extends EventEmitter {
     }
 
     embedding(image: tf.Tensor4D) {
+        if (!Model.isReady) throw Error("modelが初期化されていません");
         return Model.embedding(image);
     }
 
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {
-        this.model = Model.build(units);
+        this.model = await Model.build(units);
         if (!this.model) throw Error("先にビルドをしてください。`modelController.build(units: number)`");
 
         if (!this.controllerDataset.xs || !this.controllerDataset.ys)
@@ -64,15 +79,15 @@ class ModelController extends EventEmitter {
         this.emit("trainDone");
     }
 
-    async predict() {
-        const image = await this.webcam.getProcessedImage();
-        if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
-        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
-        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
-        image.dispose();
-        predictions.dispose();
-        
-        return classId;
-    }
+    // async predict() {
+    //     const image = await this.webcam.getProcessedImage();
+    //     if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
+    //     const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
+    //     const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
+    //     image.dispose();
+    //     predictions.dispose();
+
+    //     return classId;
+    // }
 }
 export default ModelController;

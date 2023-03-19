@@ -8,26 +8,20 @@ import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D } from "@tensorflow/tfjs";
 
 class Main {
-    private readonly webcam: Webcam;
     private ui: Ui;
     private model?: tf.LayersModel;
     private readonly modelController: ModelController;
 
     constructor() {
-        this.webcam = new Webcam();
-        this.modelController = new ModelController(this.webcam);
-        this.ui = new Ui(this.webcam, this.modelController);
+        this.modelController = new ModelController();
+        this.ui = new Ui(this.modelController);
     }
 
     async init() {
-        // await Model.init(this.webcam);
-        // if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
+        await this.modelController.init()
         this.ui.doneLoading();
     }
 
-    private async build(units: number) {
-        this.model = Model.build(units);
-    }
 }
 
 (async () => {

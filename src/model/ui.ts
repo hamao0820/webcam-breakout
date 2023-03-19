@@ -12,7 +12,7 @@ class Ui {
     private readonly webcam: Webcam;
     private mouseDown: boolean;
 
-    constructor(webcam: Webcam, modelController: ModelController) {
+    constructor(modelController: ModelController) {
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         const elements = {
@@ -22,7 +22,7 @@ class Ui {
         const nullKey = (Object.keys(elements) as (keyof typeof elements)[]).find((key) => !elements[key]);
         if (nullKey) throw Error(`${nullKey}が存在しません`);
 
-        this.webcam = webcam;
+        this.webcam = new Webcam();
         this.mouseDown = false;
 
         this.modelController = modelController;
@@ -58,7 +58,7 @@ class Ui {
 
         const buttonPredict = document.getElementById("predict-button") as HTMLButtonElement;
         if (!buttonPredict) throw Error("要素が存在しません");
-        buttonPredict.addEventListener("click", () => this.modelController.predict());
+        // buttonPredict.addEventListener("click", () => this.modelController.predict());
 
         controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
         controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
