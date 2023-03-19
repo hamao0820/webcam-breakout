@@ -11,8 +11,6 @@ class Ui {
     private readonly contextRight: CanvasRenderingContext2D;
     private readonly trainButton: HTMLButtonElement;
 
-    private readonly canvasWidth: number;
-    private readonly canvasHeight: number;
     private readonly webcam: Webcam;
     private mouseDown: boolean;
 
@@ -34,8 +32,6 @@ class Ui {
         this.contextRight = this.thumbCanvasRight.getContext("2d") as CanvasRenderingContext2D;
         if (!this.contextLeft || !this.contextRight) throw Error("コンテキストが存在しません");
 
-        this.canvasWidth = this.thumbCanvasLeft.width;
-        this.canvasHeight = this.thumbCanvasLeft.height;
         this.webcam = webcam;
         this.mouseDown = false;
     }
@@ -82,7 +78,7 @@ class Ui {
         const forThumb = async () => {
             const image = await this.webcam.getImage();
             const thumbImage = tf.tidy<Tensor3D>(() =>
-                image.reverse(1).resizeBilinear([this.canvasWidth, this.canvasHeight]).div(256)
+                image.reverse(1).resizeBilinear([this.thumbCanvasLeft.width, this.thumbCanvasLeft.height]).div(256)
             );
             this.drawThumb(thumbImage, canvas);
             image.dispose();
@@ -95,7 +91,7 @@ class Ui {
 
         const dataSizeLeft = this.getElementByIdAndCheckExist<HTMLSpanElement>("left-size");
         const dataSizeRight = this.getElementByIdAndCheckExist<HTMLSpanElement>("right-size");
-        
+
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
             await Promise.all([forThumb(), forDataset()]);
