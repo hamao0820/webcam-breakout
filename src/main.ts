@@ -2,7 +2,6 @@ import Game from "./breakout";
 import ModelController from "./model/ModelController";
 import Model from "./model/model";
 import Ui from "./model/ui";
-import Webcam from "./model/webcam";
 import "./scss/style.scss";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D } from "@tensorflow/tfjs";
@@ -18,10 +17,8 @@ class Main {
     }
 
     async init() {
-        await this.modelController.init()
-        this.ui.doneLoading();
+        await this.modelController.init();
     }
-
 }
 
 (async () => {

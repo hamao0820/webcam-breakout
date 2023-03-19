@@ -76,7 +76,7 @@ class ModelController extends EventEmitter {
             },
         });
         console.log("学習終了");
-        this.emit("trainDone");
+        // this.emit("trainDone");
     }
 
     // async predict() {

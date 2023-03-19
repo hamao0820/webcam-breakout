@@ -25,15 +25,17 @@ class Ui {
         this.webcam = new Webcam();
         this.mouseDown = false;
 
+        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
+        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
+        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
+        const trainButton = this.getElementByIdAndCheckExists<HTMLButtonElement>("train-button");
+
         this.modelController = modelController;
         this.modelController.on("batchEnd", ({ loss }) => {
             this.setTrainStatus(`Loss: ${loss}`);
         });
-
-        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
-        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
-        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
-        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
+        this.modelController.on("modelInit", this.doneLoading.bind(this));
+        // this.modelController.on("trainDone", this.);
 
         trainButton.addEventListener("click", () => {
             this.modelController.train(
@@ -56,46 +58,41 @@ class Ui {
             this.mouseDown = false;
         };
 
-        const buttonPredict = document.getElementById("predict-button") as HTMLButtonElement;
-        if (!buttonPredict) throw Error("要素が存在しません");
-        // buttonPredict.addEventListener("click", () => this.modelController.predict());
-
         controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
         controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
         controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
         controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
     }
 
-    private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
+    private getElementByIdAndCheckExists<T extends HTMLElement>(id: string) {
         const element = document.getElementById(id) as T;
         if (!element) throw Error(`#${id}が存在しません`);
         return element;
     }
 
-    getLeaningRate() {
-        const learningRateElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("learning-rate");
+    private getLeaningRate() {
+        const learningRateElement = this.getElementByIdAndCheckExists<HTMLSelectElement>("learning-rate");
         return +learningRateElement.value;
     }
 
-    getBatchSizeFraction() {
-        const batchSizeFractionElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("batch-size-fraction");
+    private getBatchSizeFraction() {
+        const batchSizeFractionElement = this.getElementByIdAndCheckExists<HTMLSelectElement>("batch-size-fraction");
         return +batchSizeFractionElement.value;
     }
 
-    getEpochs() {
-        const epochsElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("epochs");
+    private getEpochs() {
+        const epochsElement = this.getElementByIdAndCheckExists<HTMLSelectElement>("epochs");
         return +epochsElement.value;
     }
 
-    getDenseUnits() {
-        const denseUnitsElement = this.getElementByIdAndCheckExist<HTMLSelectElement>("dense-units");
+    private getDenseUnits() {
+        const denseUnitsElement = this.getElementByIdAndCheckExists<HTMLSelectElement>("dense-units");
         return +denseUnitsElement.value;
     }
 
-    doneLoading() {
-        const statusElement = document.getElementById("loading-status") as HTMLDivElement;
-        if (!statusElement) throw Error("div#loading-statusがありません");
-        statusElement.remove();
+    private doneLoading() {
+        const statusElement = this.getElementByIdAndCheckExists<HTMLDivElement>("loading-status");
+        statusElement.style.setProperty("display", "none");
     }
 
     private async buttonHandler(canvas: HTMLCanvasElement, label: number) {
@@ -117,8 +114,8 @@ class Ui {
             );
         };
 
-        const dataSizeLeft = this.getElementByIdAndCheckExist<HTMLSpanElement>("left-size");
-        const dataSizeRight = this.getElementByIdAndCheckExist<HTMLSpanElement>("right-size");
+        const dataSizeLeft = this.getElementByIdAndCheckExists<HTMLSpanElement>("left-size");
+        const dataSizeRight = this.getElementByIdAndCheckExists<HTMLSpanElement>("right-size");
 
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
@@ -132,9 +129,15 @@ class Ui {
         tf.browser.toPixels(image, canvas);
     }
 
-    setTrainStatus(status: string) {
-        const trainStatusElement = this.getElementByIdAndCheckExist<HTMLSpanElement>("train-status");
+    private setTrainStatus(status: string) {
+        const trainStatusElement = this.getElementByIdAndCheckExists<HTMLSpanElement>("train-status");
         trainStatusElement.innerHTML = status;
+    }
+
+    private enablePredict() {
+        const buttonPredict = this.getElementByIdAndCheckExists<HTMLButtonElement>("predict-button");
+        // buttonPredict.addEventListener("click", () => this.modelController.predict());
+        buttonPredict.removeAttribute("disabled");
     }
 }
 
