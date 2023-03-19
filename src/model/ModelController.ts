@@ -5,10 +5,6 @@ import { LayersModel } from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
 
-export interface ModelControllerEvent {
-    train: (units: number, learningRate: number, batchSizeFraction: number, epochs: number) => void;
-}
-
 class ModelController extends EventEmitter {
     private model: LayersModel | null = null;
     private readonly controllerDataset: ControllerDataset;
@@ -18,7 +14,6 @@ class ModelController extends EventEmitter {
             console.log("mobileNetの読み込みが完了しました");
         });
         this.controllerDataset = new ControllerDataset(2);
-        this.on("train", this.train.bind(this));
     }
 
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {

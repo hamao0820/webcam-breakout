@@ -1,4 +1,4 @@
-import ModelController, { ModelControllerEvent } from "./ModelController";
+import ModelController from "./ModelController";
 import ControllerDataset from "./controller_dataset";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
@@ -27,7 +27,6 @@ class Ui {
         this.mouseDown = false;
 
         this.modelController = modelController;
-
     }
 
     private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
@@ -115,14 +114,12 @@ class Ui {
         const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
 
         trainButton.addEventListener("click", () => {
-            this.modelController.emit(
-                "train",
+            this.modelController.train(
                 this.getDenseUnits(),
                 this.getLeaningRate(),
                 this.getBatchSizeFraction(),
                 this.getEpochs()
             );
-            // train(this.getDenseUnits());
         });
         const buttonHandlerLeft = async () => {
             const label = 0;
