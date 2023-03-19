@@ -1,4 +1,3 @@
-import Controller from "./controller";
 import Lives from "./lives";
 import Model from "./model";
 import Renderer from "./renderer";
@@ -20,7 +19,6 @@ class Game {
     private lives: Lives;
     private isDone: boolean;
     private readonly renderer: Renderer;
-    private readonly controller: Controller;
     constructor() {
         this.canvas = document.getElementById("game") as HTMLCanvasElement;
         if (!this.canvas) throw Error("canvasが存在しません");
@@ -28,12 +26,6 @@ class Game {
         if (!this.ctx) throw Error("contextが存在しません.");
         this.model = new Model(this.canvas);
         this.renderer = new Renderer(this.canvas, this.ctx);
-        this.controller = new Controller(
-            this.model.getPaddle(),
-            () => this.start(),
-            () => this.gameOver(),
-            () => this.init()
-        );
         this.lives = new Lives(this.canvas.width - 65, 20, 2);
 
         this.renderer.draw(
@@ -45,13 +37,10 @@ class Game {
         );
 
         this.isDone = false;
-
-        this.controller.init();
     }
 
     init() {
-        this.controller.reset();
-        new Game();
+        return new Game();
     }
 
     private step() {

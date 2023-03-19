@@ -1,3 +1,4 @@
+import Game from "../breakout";
 import ModelController from "./ModelController";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
@@ -12,10 +13,11 @@ class Ui {
 
     private readonly modelController: ModelController;
     private readonly webcam: Webcam;
+    private game: Game;
 
     private mouseDown: boolean;
 
-    constructor(modelController: ModelController) {
+    constructor(modelController: ModelController, game: Game) {
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         const elements = {
@@ -48,7 +50,7 @@ class Ui {
                 this.getEpochs()
             );
         });
-        
+
         tf.ready().then(() => {
             const buttonHandlerLeft = async () => {
                 const label = 0;
@@ -67,6 +69,33 @@ class Ui {
             controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
             controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
             controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
+        });
+
+        const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
+        const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
+
+        this.game = game;
+        const start = () => {
+            this.game.start();
+        };
+        const reset = () => {
+            buttonStart.removeEventListener("click", start.bind(this));
+            buttonRetry.removeEventListener("click", retry.bind(this));
+        };
+        const retry = () => {
+            this.game.gameOver();
+            reset();
+            this.game = this.game.init();
+        };
+        buttonStart.addEventListener("click", start);
+        buttonStart.addEventListener("click", () => {
+            buttonStart.setAttribute("disabled", "true");
+            buttonRetry.removeAttribute("disabled");
+        });
+        buttonRetry.addEventListener("click", retry);
+        buttonRetry.addEventListener("click", () => {
+            buttonStart.removeAttribute("disabled");
+            buttonRetry.setAttribute("disabled", "true");
         });
     }
 

@@ -7,13 +7,13 @@ import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D } from "@tensorflow/tfjs";
 
 class Main {
-    private ui: Ui;
-    private model?: tf.LayersModel;
     private readonly modelController: ModelController;
+    private readonly ui: Ui;
 
     constructor() {
+        const game = new Game();
         this.modelController = new ModelController();
-        this.ui = new Ui(this.modelController);
+        this.ui = new Ui(this.modelController, game);
     }
 
     async init() {
