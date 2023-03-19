@@ -9,8 +9,6 @@ class Ui {
     private readonly thumbCanvasRight: HTMLCanvasElement;
     private readonly contextLeft: CanvasRenderingContext2D;
     private readonly contextRight: CanvasRenderingContext2D;
-    private readonly dataSizeLeft: HTMLSpanElement;
-    private readonly dataSizeRight: HTMLSpanElement;
     private readonly trainButton: HTMLButtonElement;
 
     private readonly canvasWidth: number;
@@ -22,15 +20,11 @@ class Ui {
         this.trainStatusElement = document.getElementById("train-status") as HTMLSpanElement;
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
-        this.dataSizeLeft = document.getElementById("left-size") as HTMLSpanElement;
-        this.dataSizeRight = document.getElementById("right-size") as HTMLSpanElement;
         this.trainButton = document.getElementById("train-button") as HTMLButtonElement;
         const elements = {
             trainStatusElement: this.trainStatusElement,
             thumbCanvasLeft: this.thumbCanvasLeft,
             thumbCanvasRight: this.thumbCanvasRight,
-            dataSizeLeft: this.dataSizeLeft,
-            dataSizeRight: this.dataSizeRight,
             trainButton: this.trainButton,
         };
         const nullKey = (Object.keys(elements) as (keyof typeof elements)[]).find((key) => !elements[key]);
@@ -99,11 +93,14 @@ class Ui {
             controllerDataset.addTrainData(embedding(processedImage) as Tensor4D, label);
         };
 
+        const dataSizeLeft = this.getElementByIdAndCheckExist<HTMLSpanElement>("left-size");
+        const dataSizeRight = this.getElementByIdAndCheckExist<HTMLSpanElement>("right-size");
+        
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
             await Promise.all([forThumb(), forDataset()]);
-            this.dataSizeLeft.innerHTML = String(controllerDataset.classSizes[0]);
-            this.dataSizeRight.innerHTML = String(controllerDataset.classSizes[1]);
+            dataSizeLeft.innerHTML = String(controllerDataset.classSizes[0]);
+            dataSizeRight.innerHTML = String(controllerDataset.classSizes[1]);
         }
     }
 
