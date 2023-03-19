@@ -35,7 +35,7 @@ class Ui {
             this.setTrainStatus(`Loss: ${loss}`);
         });
         this.modelController.on("modelInit", this.doneLoading.bind(this));
-        // this.modelController.on("trainDone", this.);
+        this.modelController.on("trainDone", this.enablePredict.bind(this));
 
         trainButton.addEventListener("click", () => {
             this.modelController.train(
@@ -137,7 +137,7 @@ class Ui {
     private enablePredict() {
         const buttonPredict = this.getElementByIdAndCheckExists<HTMLButtonElement>("predict-button");
         // buttonPredict.addEventListener("click", () => this.modelController.predict());
-        buttonPredict.removeAttribute("disabled");
+        buttonPredict.removeAttribute("disabled")
     }
 }
 
