@@ -14,7 +14,7 @@ export interface ModelControllerEvent {
 
 class ModelController extends EventEmitter {
     private model: Model | null = null;
-    readonly controllerDataset: ControllerDataset;
+    private readonly controllerDataset: ControllerDataset;
     constructor() {
         super();
         this.controllerDataset = new ControllerDataset(2);
@@ -53,6 +53,10 @@ class ModelController extends EventEmitter {
 
     addTrainData(image: Tensor4D, label: number) {
         this.controllerDataset.addTrainData(this.embedding(image) as Tensor4D, label);
+    }
+
+    getClassSizes(label:number){
+        return this.controllerDataset.classSizes[label]
     }
 
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {

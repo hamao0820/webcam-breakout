@@ -2,6 +2,7 @@ import ModelController from "./ModelController";
 import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
+
 // import { EventEmitter } from "events";
 
 class Ui {
@@ -117,8 +118,8 @@ class Ui {
         while (this.mouseDown) {
             await new Promise<void>((resolve) => setTimeout(resolve, 50));
             await Promise.all([forThumb(), forDataset()]);
-            dataSizeLeft.innerHTML = String(this.modelController.controllerDataset.classSizes[0]);
-            dataSizeRight.innerHTML = String(this.modelController.controllerDataset.classSizes[1]);
+            dataSizeLeft.innerHTML = String(this.modelController.getClassSizes(0));
+            dataSizeRight.innerHTML = String(this.modelController.getClassSizes(1));
         }
     }
 
