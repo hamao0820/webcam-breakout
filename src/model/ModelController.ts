@@ -3,19 +3,22 @@ import Model from "./model";
 import Webcam from "./webcam";
 import { LayersModel } from "@tensorflow/tfjs";
 import * as tf from "@tensorflow/tfjs";
+import type { Tensor1D } from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
-
 
 export interface ModelControllerEvent {
     batchEnd: { loss: string };
+    trainDone: {};
 }
 
 class ModelController extends EventEmitter {
     private model: LayersModel | null = null;
     readonly controllerDataset: ControllerDataset;
+    private readonly webcam: Webcam;
     constructor(webcam: Webcam) {
         super();
-        Model.init(webcam).then(() => {
+        this.webcam = webcam;
+        Model.init(this.webcam).then(() => {
             console.log("mobileNetの読み込みが完了しました");
         });
         this.controllerDataset = new ControllerDataset(2);
@@ -25,7 +28,7 @@ class ModelController extends EventEmitter {
         return super.on(event, (kwargs: ModelControllerEvent[K]) => listener(kwargs));
     }
 
-    emit<K extends keyof ModelControllerEvent>(event: K, kwargs: ModelControllerEvent[K]) {
+    emit<K extends keyof ModelControllerEvent>(event: K, kwargs?: ModelControllerEvent[K]) {
         return super.emit(event, kwargs);
     }
 
@@ -58,6 +61,18 @@ class ModelController extends EventEmitter {
             },
         });
         console.log("学習終了");
+        this.emit("trainDone");
+    }
+
+    async predict() {
+        const image = await this.webcam.getProcessedImage();
+        if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
+        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
+        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
+        image.dispose();
+        predictions.dispose();
+        
+        return classId;
     }
 }
 export default ModelController;

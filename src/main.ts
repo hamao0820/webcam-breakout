@@ -11,33 +11,22 @@ class Main {
     private readonly webcam: Webcam;
     private ui: Ui;
     private model?: tf.LayersModel;
+    private readonly modelController: ModelController;
 
     constructor() {
         this.webcam = new Webcam();
-        const modelController = new ModelController(this.webcam);
-        this.ui = new Ui(this.webcam, modelController);
+        this.modelController = new ModelController(this.webcam);
+        this.ui = new Ui(this.webcam, this.modelController);
     }
 
     async init() {
-        await Model.init(this.webcam);
-        if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
+        // await Model.init(this.webcam);
+        // if (!Model.isInitialized()) throw Error("モデルが初期化されていません");
         this.ui.doneLoading();
-        this.ui.init(this.predict.bind(this));
     }
 
     private async build(units: number) {
         this.model = Model.build(units);
-    }
-
-    private async predict() {
-        const image = await this.webcam.getProcessedImage();
-        if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
-        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
-        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
-        image.dispose();
-        predictions.dispose();
-
-        return classId;
     }
 }
 

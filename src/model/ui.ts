@@ -29,6 +29,41 @@ class Ui {
         this.modelController.on("batchEnd", ({ loss }) => {
             this.setTrainStatus(`Loss: ${loss}`);
         });
+
+        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
+        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
+        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
+        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
+
+        trainButton.addEventListener("click", () => {
+            this.modelController.train(
+                this.getDenseUnits(),
+                this.getLeaningRate(),
+                this.getBatchSizeFraction(),
+                this.getEpochs()
+            );
+        });
+        const buttonHandlerLeft = async () => {
+            const label = 0;
+            await this.buttonHandler(this.thumbCanvasLeft, label);
+        };
+        const buttonHandlerRight = async () => {
+            const label = 1;
+            await this.buttonHandler(this.thumbCanvasRight, label);
+        };
+
+        const mouseUpHandler = () => {
+            this.mouseDown = false;
+        };
+
+        const buttonPredict = document.getElementById("predict-button") as HTMLButtonElement;
+        if (!buttonPredict) throw Error("要素が存在しません");
+        buttonPredict.addEventListener("click", () => this.modelController.predict());
+
+        controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
+        controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
+        controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
+        controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
     }
 
     private getElementByIdAndCheckExist<T extends HTMLElement>(id: string) {
@@ -100,43 +135,6 @@ class Ui {
     setTrainStatus(status: string) {
         const trainStatusElement = this.getElementByIdAndCheckExist<HTMLSpanElement>("train-status");
         trainStatusElement.innerHTML = status;
-    }
-
-    init(predict: () => void) {
-        const controllerButtonLeft = document.getElementById("button-left") as HTMLButtonElement;
-        const controllerButtonRight = document.getElementById("button-right") as HTMLButtonElement;
-        if (!controllerButtonLeft || !controllerButtonRight) throw Error("コントローラーボタンがありません。");
-        const trainButton = this.getElementByIdAndCheckExist<HTMLButtonElement>("train-button");
-
-        trainButton.addEventListener("click", () => {
-            this.modelController.train(
-                this.getDenseUnits(),
-                this.getLeaningRate(),
-                this.getBatchSizeFraction(),
-                this.getEpochs()
-            );
-        });
-        const buttonHandlerLeft = async () => {
-            const label = 0;
-            await this.buttonHandler(this.thumbCanvasLeft, label);
-        };
-        const buttonHandlerRight = async () => {
-            const label = 1;
-            await this.buttonHandler(this.thumbCanvasRight, label);
-        };
-
-        const mouseUpHandler = () => {
-            this.mouseDown = false;
-        };
-
-        const buttonPredict = document.getElementById("predict-button") as HTMLButtonElement;
-        if (!buttonPredict) throw Error("要素が存在しません");
-        buttonPredict.addEventListener("click", predict);
-
-        controllerButtonLeft.addEventListener("mousedown", buttonHandlerLeft);
-        controllerButtonRight.addEventListener("mousedown", buttonHandlerRight);
-        controllerButtonLeft.addEventListener("mouseup", mouseUpHandler);
-        controllerButtonRight.addEventListener("mouseup", mouseUpHandler);
     }
 }
 
