@@ -4,7 +4,6 @@ import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
 class Ui {
-    private readonly trainStatusElement: HTMLSpanElement;
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
 
@@ -12,11 +11,9 @@ class Ui {
     private mouseDown: boolean;
 
     constructor(webcam: Webcam) {
-        this.trainStatusElement = document.getElementById("train-status") as HTMLSpanElement;
         this.thumbCanvasLeft = document.getElementById("thumb-left") as HTMLCanvasElement;
         this.thumbCanvasRight = document.getElementById("thumb-right") as HTMLCanvasElement;
         const elements = {
-            trainStatusElement: this.trainStatusElement,
             thumbCanvasLeft: this.thumbCanvasLeft,
             thumbCanvasRight: this.thumbCanvasRight,
         };
@@ -96,7 +93,8 @@ class Ui {
     }
 
     setTrainStatus(status: string) {
-        this.trainStatusElement.innerHTML = status;
+        const trainStatusElement = this.getElementByIdAndCheckExist<HTMLSpanElement>("train-status");
+        trainStatusElement.innerHTML = status;
     }
 
     init(
