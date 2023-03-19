@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="webcam-container">
-            <video id="monitor" width="196px" height="196px"></video>
+            <video id="monitor" width="224px" height="224px"></video>
         </div>
         <div id="status">Loading mobilenet...</div>
         <div class="hyper-param">
@@ -16,7 +16,7 @@
             <div class="dropdown">
                 <label>learning rate</label>
                 <div class="select">
-                    <select id="learnig-rate">
+                    <select id="learning-rate">
                         <option value="0.00001">0.00001</option>
                         <option selected value="0.0001">0.0001</option>
                         <option value="0.01">0.001</option>
@@ -90,8 +90,8 @@
         </div>
         <!-- /#controller -->
 
-        <div class="training-butotns">
-            <button class="train">
+        <div>
+            <button id="train-button">
                 <span id="train-status">学習開始</span>
             </button>
         </div>

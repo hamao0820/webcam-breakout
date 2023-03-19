@@ -1,7 +1,8 @@
+import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
-import { ContainerArgs } from "@tensorflow/tfjs-layers/dist/engine/container";
+import type { ContainerArgs } from "@tensorflow/tfjs-layers/dist/engine/container";
 
-class TruncatedMobileNet extends tf.LayersModel {
+export class TruncatedMobileNet extends tf.LayersModel {
     private constructor(args: ContainerArgs) {
         super(args);
     }
@@ -17,38 +18,46 @@ class TruncatedMobileNet extends tf.LayersModel {
 
 class Model extends tf.Sequential {
     private static readonly NUM_CLASSES = 2;
-    private readonly truncatedMobileNet: TruncatedMobileNet;
+    static #truncatedMobileNet: TruncatedMobileNet | Promise<TruncatedMobileNet> = TruncatedMobileNet.build();
+
     private constructor(truncatedMobileNet: TruncatedMobileNet, units: number) {
-        super({
-            layers: [
-                tf.layers.flatten({ inputShape: truncatedMobileNet.outputs[0].shape.slice(1) }),
-                tf.layers.dense({
-                    units: units,
-                    activation: "relu",
-                    kernelInitializer: "varianceScaling",
-                    useBias: true,
-                }),
-                tf.layers.dense({
-                    units: Model.NUM_CLASSES,
-                    kernelInitializer: "varianceScaling",
-                    useBias: false,
-                    activation: "softmax",
-                }),
-            ],
-        });
-        this.truncatedMobileNet = truncatedMobileNet;
+        super();
+        this.add(tf.layers.flatten({ inputShape: truncatedMobileNet.outputs[0].shape.slice(1) }));
+        this.add(
+            tf.layers.dense({
+                units: units,
+                activation: "relu",
+                kernelInitializer: "varianceScaling",
+                useBias: true,
+            })
+        );
+        this.add(
+            tf.layers.dense({
+                units: Model.NUM_CLASSES,
+                kernelInitializer: "varianceScaling",
+                useBias: false,
+                activation: "softmax",
+            })
+        );
     }
 
-    static async build(units: number) {
-        const truncatedMobileNet = await TruncatedMobileNet.build();
-        return new Model(truncatedMobileNet, units);
+    static build(units: number) {
+        if (this.#truncatedMobileNet instanceof Promise)
+            throw Error("初期化されていません. `Model.init(webcam: Webcam): Promise<void>`を実行してください。");
+        return new Model(this.#truncatedMobileNet, units);
     }
 
     // Warm up the model. This uploads weights to the GPU and compiles the WebGL
     // programs so the first time we collect data from the webcam it will be
     // quick.
-    init(x: tf.Tensor<tf.Rank> | tf.Tensor<tf.Rank>[]) {
-        this.truncatedMobileNet.predict(x);
+    static async init(webcam: Webcam) {
+        this.#truncatedMobileNet = await this.#truncatedMobileNet;
+        const screenShot = await webcam.getProcessedImage();
+        this.#truncatedMobileNet.predict(screenShot);
+        screenShot.dispose();
+    }
+    static get truncatedMobileNet() {
+        return this.#truncatedMobileNet;
     }
 }
 
