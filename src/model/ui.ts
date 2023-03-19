@@ -4,8 +4,6 @@ import Webcam from "./webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
-// import { EventEmitter } from "events";
-
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
@@ -41,6 +39,10 @@ class Ui {
         this.modelController.on("modelInit", this.doneLoading.bind(this));
         this.modelController.on("trainDone", this.enablePredict.bind(this));
         this.modelController.on("predict", this.highlightCorrectAnswer.bind(this));
+        const paddleOperate = ({ classId }: { classId: 0 | 1 }) => {
+            this.breakout.paddleOperate(classId);
+        };
+        this.modelController.on("predict", paddleOperate);
 
         this.buttonTrain.addEventListener("click", () => {
             this.modelController.train(
@@ -52,6 +54,10 @@ class Ui {
         });
 
         this.breakout = breakout;
+        this.breakout.on("step", async () => {
+            const image = await this.webcam.getProcessedImage();
+            this.modelController.predict(image);
+        });
         const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
         const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
         tf.ready().then(() => {
@@ -84,6 +90,10 @@ class Ui {
                 this.breakout.gameOver();
                 reset();
                 this.breakout = this.breakout.init();
+                this.breakout.on("step", async () => {
+                    const image = await this.webcam.getProcessedImage();
+                    this.modelController.predict(image);
+                });
             };
             buttonStart.addEventListener("click", start);
             buttonStart.addEventListener("click", () => {

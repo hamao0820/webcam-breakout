@@ -1,6 +1,7 @@
 import Lives from "./lives";
 import Model from "./model";
 import Renderer from "./renderer";
+import { EventEmitter } from "events";
 
 export const checkIntervalsIntersect = (
     [...interval1]: [number, number],
@@ -12,7 +13,11 @@ export const checkIntervalsIntersect = (
     return firstInterval[1] >= secondInterval[0];
 };
 
-class Breakout {
+export interface BreakoutEvent {
+    step: {};
+}
+
+class Breakout extends EventEmitter {
     readonly canvas: HTMLCanvasElement;
     readonly ctx: CanvasRenderingContext2D;
     private readonly model: Model;
@@ -20,6 +25,7 @@ class Breakout {
     private isDone: boolean;
     private readonly renderer: Renderer;
     constructor() {
+        super();
         this.canvas = document.getElementById("game") as HTMLCanvasElement;
         if (!this.canvas) throw Error("canvasが存在しません");
         this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -39,13 +45,28 @@ class Breakout {
         this.isDone = false;
     }
 
+    on<K extends keyof BreakoutEvent>(event: K, listener: (kwargs: BreakoutEvent[K]) => void): this {
+        return super.on(event, (kwargs: BreakoutEvent[K]) => listener(kwargs));
+    }
+
+    emit<K extends keyof BreakoutEvent>(event: K, kwargs?: BreakoutEvent[K]) {
+        return super.emit(event, kwargs);
+    }
+
+    removeAllListeners<K extends keyof BreakoutEvent>(event: K) {
+        return super.removeAllListeners(event);
+    }
+
     init() {
+        this.removeAllListeners("step");
         return new Breakout();
     }
 
     private step() {
         if (this.isDone) return;
         this.model.update();
+        this.emit("step");
+
         this.renderer.draw(
             this.model.getBall(),
             this.model.getPaddle(),
@@ -73,6 +94,21 @@ class Breakout {
     gameOver() {
         this.isDone = true;
         console.log("GAME OVER");
+    }
+
+    paddleOperate(classId: 0 | 1) {
+        switch (classId) {
+            case 0: {
+                this.model.getPaddle().accelerateToLeft();
+                break;
+            }
+            case 1: {
+                this.model.getPaddle().accelerateToRight();
+                break;
+            }
+            default:
+                throw Error("classIdが不正です");
+        }
     }
 }
 

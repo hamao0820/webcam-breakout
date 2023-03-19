@@ -8,7 +8,7 @@ export interface ModelControllerEvent {
     batchEnd: { loss: string };
     trainDone: {};
     modelInit: {};
-    predict: { classId: number };
+    predict: { classId: 0 | 1 };
 }
 
 class ModelController extends EventEmitter {
@@ -31,7 +31,7 @@ class ModelController extends EventEmitter {
     async init() {
         await this.load();
         const model = await Model.build(1);
-        // if (!model) throw Error("modelがロードされていません");
+        if (!model) throw Error("modelがロードされていません");
         const randomImage: Tensor4D = tf.randomNormal([1, 224, 224, 3]);
         Model.embedding(randomImage);
         randomImage.dispose();
@@ -89,10 +89,10 @@ class ModelController extends EventEmitter {
     async predict(image: Tensor4D) {
         if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
         const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
-        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
+        const classId = tf.tidy(() => Number(predictions.as1D().argMax().dataSync()));
         predictions.dispose();
-        this.emit("predict", { classId: Number(classId) });
-        return classId;
+        if (classId !== 0 && classId !== 1) throw Error("classIdが不正です");
+        this.emit("predict", { classId: classId });
     }
 }
 export default ModelController;
