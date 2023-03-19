@@ -8,9 +8,10 @@ import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
-    private readonly modelController: ModelController;
 
+    private readonly modelController: ModelController;
     private readonly webcam: Webcam;
+
     private mouseDown: boolean;
 
     constructor(modelController: ModelController) {
@@ -134,7 +135,11 @@ class Ui {
 
     private enablePredict() {
         const buttonPredict = this.getElementByIdAndCheckExists<HTMLButtonElement>("predict-button");
-        // buttonPredict.addEventListener("click", () => this.modelController.predict());
+        buttonPredict.addEventListener("click", async () => {
+            const image = await this.webcam.getProcessedImage();
+            await this.modelController.predict(image);
+            image.dispose();
+        });
         buttonPredict.removeAttribute("disabled");
     }
 }

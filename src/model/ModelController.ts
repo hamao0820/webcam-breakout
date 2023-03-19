@@ -55,8 +55,8 @@ class ModelController extends EventEmitter {
         this.controllerDataset.addTrainData(this.embedding(image) as Tensor4D, label);
     }
 
-    getClassSizes(label:number){
-        return this.controllerDataset.classSizes[label]
+    getClassSizes(label: number) {
+        return this.controllerDataset.classSizes[label];
     }
 
     async train(units: number, learningRate: number, batchSizeFraction: number, epochs: number) {
@@ -87,15 +87,13 @@ class ModelController extends EventEmitter {
         this.emit("trainDone");
     }
 
-    // async predict() {
-    //     const image = await this.webcam.getProcessedImage();
-    //     if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
-    //     const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
-    //     const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
-    //     image.dispose();
-    //     predictions.dispose();
-
-    //     return classId;
-    // }
+    async predict(image: Tensor4D) {
+        if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
+        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
+        const classId = tf.tidy(() => predictions.as1D().argMax().dataSync());
+        predictions.dispose();
+        console.log(classId);
+        return classId;
+    }
 }
 export default ModelController;
