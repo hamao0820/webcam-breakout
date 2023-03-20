@@ -6,6 +6,10 @@
 .webcam-container {
     #monitor {
         height: 160px;
+        width: 160px;
+        padding: 10px;
+        background: gray;
+        border-radius: 5%;
         transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
     }
@@ -61,33 +65,54 @@
 
 .controller-panels {
     display: flex;
+    width: 70vw;
+    margin: 0 auto;
     .panel {
         display: flex;
         flex-direction: column;
         flex: 1;
         justify-content: center;
-        align-items: center;
+        align-items: space-between;
+        padding: 30px 10px 30px;
 
         &:first-child {
             border-right: 1px dashed #565656;
         }
         .panel-row {
             display: flex;
-        }
-    }
-}
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
 
-.panel-row-bottom {
-    .help-text {
-        &::before {
-            content: "";
-            display: inline-block;
-            background: url("../images/corner-left-up.svg");
-            background-repeat: no-repeat;
-            background-size: contain;
-            width: 30px;
-            height: 30px;
+            &.button-row {
+                justify-content: center;
+                button {
+                    margin: 5px 30px;
+                }
+            }
+
+            &.params-webcam-row {
+                justify-content: space-around;
+            }
+
+            &.controller-row {
+                justify-content: center;
+            }
+            &.help-row {
+                justify-content: center;
+                .help-text {
+                    &::before {
+                        content: "";
+                        display: inline-block;
+                        background: url("../images/corner-left-up.svg");
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        width: 30px;
+                        height: 30px;
+                    }
+                    text-align: end;
+                }
+            }
         }
-        text-align: end;
     }
 }
