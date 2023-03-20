@@ -9,7 +9,6 @@ module.exports = {
 
   // メインとなるJavaScriptファイル（エントリーポイント）
   entry: "./src/ts/main.ts",
-
   module: {
     rules: [
       {
@@ -23,9 +22,13 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: '../' },
           },
           {
             loader: "css-loader",
+            options: {
+              url: true
+            }
           },
           {
             loader: "sass-loader",
@@ -35,22 +38,22 @@ module.exports = {
       {
         //拡張子がpng,jpg,gif,svgを検知したら
         test: /\.(png|jpg|gif|svg)$/,
-        use:{
-                loader: 'file-loader',
-                options: {
-                    name: '[name].[ext]',
-                    outputPath: "images",
-                    publicPath: "images"
-                }
-        }
-      }
+        type: "asset/resource",
+        generator: {
+          filename: `./images/[name].[contenthash][ext]`,
+        },
+      },
+      {
+        test: /\.(html)$/,
+        use: 'html-loader'
+      },
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/templates/index.html",
     }),
-    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: "./css/style.css",
     }),
@@ -60,5 +63,5 @@ module.exports = {
   },
   watchOptions: {
     ignored: [".git/**", "node_modules"]
-  }
+  },
 };
