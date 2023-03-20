@@ -23,14 +23,24 @@
     margin-top: 30px;
     .thumb-box {
         $thumb-size: 128px;
-        width: $thumb-size;
         padding: 5px 10px;
         background-color: rgba(255, 255, 255, 0);
+        text-align: center;
         button {
             padding: 0;
             border: 0;
             width: $thumb-size;
             height: $thumb-size;
+        }
+        .button-box {
+            width: $thumb-size;
+            height: $thumb-size;
+            padding: 5px;
+            background: gray;
+            border-radius: 5%;
+            button {
+                cursor: pointer;
+            }
         }
 
         &.predicted {
@@ -73,16 +83,18 @@
 }
 
 .controller-panels {
+    $panel-width: 500px;
     display: flex;
-    width: 70vw;
+    width: calc(#{$panel-width} * 2);
+    justify-content: center;
     margin: 0 auto;
     .panel {
         display: flex;
+        width: $panel-width;
         flex-direction: column;
-        flex: 1;
         justify-content: center;
-        align-items: space-between;
-        padding: 20px;
+        align-items: center;
+        padding: 10px;
 
         &:first-child {
             border-right: 1px dashed #565656;
@@ -90,13 +102,39 @@
         .panel-row {
             display: flex;
             flex-direction: row;
+            justify-content: center;
             align-items: center;
             width: 100%;
+            width: 500px;
+            padding: 3px;
+            margin: 5px 0;
 
             &.button-row {
                 justify-content: center;
                 button {
                     margin: 5px 30px;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    border-radius: 5%;
+
+                    .button-text {
+                        border-bottom: 2px solid #484848;
+                        border-top: 2px solid #484848;
+                        // color: #aaa;
+                        display: inline-block;
+                        font-size: 18px;
+                        font-weight: 500;
+                        padding: 6px 12px;
+                        text-align: left;
+                        white-space: nowrap;
+                    }
+                    .icon {
+                        font-size: 50px;
+                    }
                 }
             }
 
@@ -189,4 +227,8 @@
             pointer-events: none;
         }
     }
+}
+
+.icon {
+    font-family: "Material Icons";
 }
