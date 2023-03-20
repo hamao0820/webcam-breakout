@@ -1,7 +1,17 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+$body-width: 1200px;
+
 * {
     margin: 0;
     padding: 0;
+}
+
+.body {
+    width: $body-width;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .webcam-container {
@@ -65,12 +75,11 @@
 #game {
     background: #eee;
     display: block;
-    margin: 0 auto;
 }
 
 .button-container {
     margin: 5px 10px;
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
     button {

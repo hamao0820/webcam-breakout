@@ -7,130 +7,132 @@
         <title>Webcam Breakout</title>
     </head>
     <body>
-        <canvas id="game" width="480" height="350"></canvas>
-        <div class="button-container">
-            <button class="start" id="start-button" disabled>
-                <span class="icon">play_circle</span>
-                <span class="button-text">play</span>
-            </button>
-            <button class="retry" id="retry-button" disabled>
-                <span class="icon">replay</span>
-                <span class="button-text">replay</span>
-            </button>
-        </div>
-        <div class="controller-panels">
-            <div class="panel">
-                <div class="panel-row button-row">
-                    <button id="train-button" disabled>
-                        <span class="icon">smart_toy</span>
-                        <span id="train-status" class="button-text">学習開始</span>
-                    </button>
-                    <button id="reset-button" disabled>
-                        <span class="icon">layers_clear</span>
-                        <span class="button-text">データをリセット</span>
-                    </button>
-                </div>
-                <div class="panel-row params-webcam-row">
-                    <div class="hyper-params">
-                        <!-- Learning rate -->
-                        <div class="dropdown">
-                            <label>learning rate</label>
-                            <div class="select">
-                                <select id="learning-rate">
-                                    <option value="0.00001">0.00001</option>
-                                    <option selected value="0.0001">0.0001</option>
-                                    <option value="0.01">0.001</option>
-                                    <option value="0.03">0.003</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Batch size -->
-                        <div class="dropdown">
-                            <label>Batch size</label>
-                            <div class="select">
-                                <select id="batch-size-fraction">
-                                    <option value="0.05">0.05</option>
-                                    <option value="0.1">0.1</option>
-                                    <option selected value="0.4">0.4</option>
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Epochs -->
-                        <div class="dropdown">
-                            <label>Epochs</label>
-                            <div class="select">
-                                <select id="epochs">
-                                    <option value="10">10</option>
-                                    <option selected value="20">20</option>
-                                    <option value="40">40</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Hidden units -->
-                        <div class="dropdown">
-                            <label>Hidden units</label>
-                            <div class="select">
-                                <select id="dense-units">
-                                    <option value="10">10</option>
-                                    <option selected value="100">100</option>
-                                    <option value="200">200</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.hyper-param -->
-                    <div class="webcam-container">
-                        <video id="monitor" width="224px" height="224px"></video>
-                        <div id="loading-status">Loading mobilenet...</div>
-                    </div>
-                </div>
+        <div class="body">
+            <canvas id="game" width="480" height="350"></canvas>
+            <div class="button-container">
+                <button class="start" id="start-button" disabled>
+                    <span class="icon">play_circle</span>
+                    <span class="button-text">play</span>
+                </button>
+                <button class="retry" id="retry-button" disabled>
+                    <span class="icon">replay</span>
+                    <span class="button-text">replay</span>
+                </button>
             </div>
-            <!-- /.panel-row -->
-            <div class="panel">
-                <div class="panel-row controller-row">
-                    <div id="controller">
-                        <div class="thumb-box" id="thumb-box-left">
-                            <div class="data-size-area">
-                                <span class="data-size" id="left-size">0</span>
-                                examples
+            <div class="controller-panels">
+                <div class="panel">
+                    <div class="panel-row button-row">
+                        <button id="train-button" disabled>
+                            <span class="icon">smart_toy</span>
+                            <span id="train-status" class="button-text">学習開始</span>
+                        </button>
+                        <button id="reset-button" disabled>
+                            <span class="icon">layers_clear</span>
+                            <span class="button-text">データをリセット</span>
+                        </button>
+                    </div>
+                    <div class="panel-row params-webcam-row">
+                        <div class="hyper-params">
+                            <!-- Learning rate -->
+                            <div class="dropdown">
+                                <label>learning rate</label>
+                                <div class="select">
+                                    <select id="learning-rate">
+                                        <option value="0.00001">0.00001</option>
+                                        <option selected value="0.0001">0.0001</option>
+                                        <option value="0.01">0.001</option>
+                                        <option value="0.03">0.003</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="button-box">
-                                <button id="button-left">
-                                    <canvas class="thumb" id="thumb-left" height="128px" width="128px"></canvas>
-                                </button>
+
+                            <!-- Batch size -->
+                            <div class="dropdown">
+                                <label>Batch size</label>
+                                <div class="select">
+                                    <select id="batch-size-fraction">
+                                        <option value="0.05">0.05</option>
+                                        <option value="0.1">0.1</option>
+                                        <option selected value="0.4">0.4</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Epochs -->
+                            <div class="dropdown">
+                                <label>Epochs</label>
+                                <div class="select">
+                                    <select id="epochs">
+                                        <option value="10">10</option>
+                                        <option selected value="20">20</option>
+                                        <option value="40">40</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Hidden units -->
+                            <div class="dropdown">
+                                <label>Hidden units</label>
+                                <div class="select">
+                                    <select id="dense-units">
+                                        <option value="10">10</option>
+                                        <option selected value="100">100</option>
+                                        <option value="200">200</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="arrow icon">arrow_circle_left</div>
-                        <div class="arrow icon">arrow_circle_right</div>
-                        <div class="thumb-box" id="thumb-box-right">
-                            <div class="data-size-area">
-                                <span class="data-size" id="right-size">0</span>
-                                examples
-                            </div>
-                            <div class="button-box">
-                                <button id="button-right">
-                                    <canvas class="thumb" id="thumb-right" height="128px" width="128px"></canvas>
-                                </button>
-                            </div>
+                        <!-- /.hyper-param -->
+                        <div class="webcam-container">
+                            <video id="monitor" width="224px" height="224px"></video>
+                            <div id="loading-status">Loading mobilenet...</div>
                         </div>
                     </div>
-                    <!-- /#controller -->
                 </div>
                 <!-- /.panel-row -->
-                <div class="panel-row help-row">
-                    <p class="help-text">
-                        クリックすると学習データとして<br />
-                        現在のカメラビューが追加されます
-                    </p>
+                <div class="panel">
+                    <div class="panel-row controller-row">
+                        <div id="controller">
+                            <div class="thumb-box" id="thumb-box-left">
+                                <div class="data-size-area">
+                                    <span class="data-size" id="left-size">0</span>
+                                    examples
+                                </div>
+                                <div class="button-box">
+                                    <button id="button-left">
+                                        <canvas class="thumb" id="thumb-left" height="128px" width="128px"></canvas>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="arrow icon">arrow_circle_left</div>
+                            <div class="arrow icon">arrow_circle_right</div>
+                            <div class="thumb-box" id="thumb-box-right">
+                                <div class="data-size-area">
+                                    <span class="data-size" id="right-size">0</span>
+                                    examples
+                                </div>
+                                <div class="button-box">
+                                    <button id="button-right">
+                                        <canvas class="thumb" id="thumb-right" height="128px" width="128px"></canvas>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /#controller -->
+                    </div>
+                    <!-- /.panel-row -->
+                    <div class="panel-row help-row">
+                        <p class="help-text">
+                            クリックすると学習データとして<br />
+                            現在のカメラビューが追加されます
+                        </p>
+                    </div>
+                    <!-- /.panel-row -->
                 </div>
-                <!-- /.panel-row -->
+                <!-- /.panel -->
             </div>
-            <!-- /.panel -->
+            <!-- /.controller-panels -->
         </div>
-        <!-- /.controller-panels -->
     </body>
 </html>
