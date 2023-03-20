@@ -5,6 +5,7 @@
 
 .webcam-container {
     #monitor {
+        height: 160px;
         transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
     }
@@ -12,15 +13,16 @@
 
 #controller {
     display: flex;
+    align-items: center;
     .thumb-box {
-        width: fit-content;
-        height: fit-content;
+        $thumb-size: 128px;
+        width: $thumb-size;
         background-color: rgba(255, 255, 255, 0);
         button {
             padding: 0;
             border: 0;
-            width: 128px;
-            height: 128px;
+            width: $thumb-size;
+            height: $thumb-size;
         }
 
         &.predicted {
@@ -28,9 +30,12 @@
         }
     }
     .arrow {
+        $arrow-size: 64px;
+        width: $arrow-size;
+        height: $arrow-size;
         img {
-            width: 128px;
-            height: 128px;
+            width: $arrow-size;
+            height: $arrow-size;
         }
     }
 }
@@ -51,5 +56,38 @@
         font-size: large;
         margin: 0 30px;
         padding: 5px;
+    }
+}
+
+.controller-panels {
+    display: flex;
+    .panel {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+
+        &:first-child {
+            border-right: 1px dashed #565656;
+        }
+        .panel-row {
+            display: flex;
+        }
+    }
+}
+
+.panel-row-bottom {
+    .help-text {
+        &::before {
+            content: "";
+            display: inline-block;
+            background: url("../images/corner-left-up.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 30px;
+            height: 30px;
+        }
+        text-align: end;
     }
 }
