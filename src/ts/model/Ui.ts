@@ -31,6 +31,21 @@ class Ui {
         const controllerButtonLeft = this.getElementByIdAndCheckExists<HTMLButtonElement>("button-left");
         const controllerButtonRight = this.getElementByIdAndCheckExists<HTMLButtonElement>("button-right");
         this.buttonTrain = this.getElementByIdAndCheckExists<HTMLButtonElement>("train-button");
+        const leverIcon = this.getElementByIdAndCheckExists<HTMLDivElement>("lever-image");
+        const switchLever = ({ classId }: { classId: number }) => {
+            switch (classId) {
+                case 0: {
+                    leverIcon.style.transform = "none";
+                    break;
+                }
+                case 1: {
+                    leverIcon.style.transform = "scaleX(-1)";
+                    break;
+                }
+                default:
+                    throw Error("classIdが不正です");
+            }
+        };
 
         this.modelController = modelController;
         this.modelController.on("batchEnd", ({ loss }) => {
@@ -43,6 +58,7 @@ class Ui {
             this.breakout.paddleOperate(classId);
         };
         this.modelController.on("predict", paddleOperate);
+        this.modelController.on("predict", switchLever);
 
         this.buttonTrain.addEventListener("click", () => {
             this.modelController.train(
@@ -154,17 +170,17 @@ class Ui {
     }
 
     private highlightCorrectAnswer({ classId }: { classId: number }) {
-        const thumbBoxLeft = this.getElementByIdAndCheckExists("thumb-box-left");
-        const thumbBoxRight = this.getElementByIdAndCheckExists("thumb-box-right");
+        const buttonBoxLeft = this.getElementByIdAndCheckExists("button-box-left");
+        const buttonBoxRight = this.getElementByIdAndCheckExists("button-box-right");
         switch (classId) {
             case 0: {
-                thumbBoxLeft.classList.add("predicted");
-                thumbBoxRight.classList.remove("predicted");
+                buttonBoxLeft.classList.add("predicted");
+                buttonBoxRight.classList.remove("predicted");
                 break;
             }
             case 1: {
-                thumbBoxRight.classList.add("predicted");
-                thumbBoxLeft.classList.remove("predicted");
+                buttonBoxRight.classList.add("predicted");
+                buttonBoxLeft.classList.remove("predicted");
                 break;
             }
             default:
