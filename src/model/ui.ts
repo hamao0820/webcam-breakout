@@ -153,7 +153,7 @@ class Ui {
         statusElement.style.setProperty("display", "none");
     }
 
-    highlightCorrectAnswer({ classId }: { classId: number }) {
+    private highlightCorrectAnswer({ classId }: { classId: number }) {
         const thumbBoxLeft = this.getElementByIdAndCheckExists("thumb-box-left");
         const thumbBoxRight = this.getElementByIdAndCheckExists("thumb-box-right");
         switch (classId) {
