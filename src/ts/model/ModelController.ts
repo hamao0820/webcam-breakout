@@ -1,5 +1,5 @@
-import ControllerDataset from "./controller_dataset";
-import Model from "./model";
+import ControllerDataset from "./Dataset";
+import Model from "./Model";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor1D, Tensor4D } from "@tensorflow/tfjs";
 import { EventEmitter } from "events";

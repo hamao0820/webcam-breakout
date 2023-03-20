@@ -1,8 +1,8 @@
-import Ball from './ball';
-import Brick from './brick';
-import Lives from './lives';
-import Paddle from './paddle';
-import ScoreObject from './score';
+import Ball from './Ball';
+import Brick from './Brick';
+import Lives from './Lives';
+import Paddle from './Paddle';
+import ScoreObject from './Score';
 
 class Renderer {
     canvas: HTMLCanvasElement;

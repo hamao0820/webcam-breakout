@@ -1,6 +1,6 @@
 import Breakout from "../breakout/Breakout";
 import ModelController from "./ModelController";
-import Webcam from "./webcam";
+import Webcam from "./Webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 

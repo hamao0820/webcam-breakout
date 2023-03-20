@@ -1,6 +1,6 @@
-import Lives from "./lives";
-import Model from "./model";
-import Renderer from "./renderer";
+import Lives from "./Lives";
+import Model from "./Model";
+import Renderer from "./Renderer";
 import { EventEmitter } from "events";
 
 export const checkIntervalsIntersect = (

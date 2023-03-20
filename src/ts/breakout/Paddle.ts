@@ -1,5 +1,5 @@
 import { checkIntervalsIntersect } from "./Breakout";
-import Ball, { Angle } from "./ball";
+import Ball, { Angle } from "./Ball";
 import GameObject, { Bouncy, CollisionRect } from "./game";
 
 class Paddle implements GameObject, Bouncy {

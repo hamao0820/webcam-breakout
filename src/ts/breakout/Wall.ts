@@ -1,5 +1,5 @@
-import Ball from './ball';
-import GameObject, { Bouncy } from './game';
+import Ball from "./Ball";
+import GameObject, { Bouncy } from "./game";
 
 class Wall implements Bouncy {
     readonly top: number;

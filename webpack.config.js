@@ -8,7 +8,7 @@ module.exports = {
   mode: "development",
 
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: "./src/main.ts",
+  entry: "./src/ts/main.ts",
 
   module: {
     rules: [

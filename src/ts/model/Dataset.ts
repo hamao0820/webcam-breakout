@@ -1,7 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
 import { Tensor4D, Tensor2D } from "@tensorflow/tfjs";
 
-class ControllerDataset {
+class Dataset {
     private readonly numClasses: number;
     #xs: Tensor4D | null;
     #ys: Tensor2D | null;
@@ -64,4 +64,4 @@ class ControllerDataset {
     }
 }
 
-export default ControllerDataset;
+export default Dataset;

@@ -1,10 +1,7 @@
 import Breakout from "./breakout/Breakout";
 import ModelController from "./model/ModelController";
-import Model from "./model/model";
-import Ui from "./model/ui";
-import "./scss/style.scss";
-import * as tf from "@tensorflow/tfjs";
-import type { Tensor1D } from "@tensorflow/tfjs";
+import Ui from "./model/Ui";
+import "../scss/style.scss";
 
 class Main {
     private readonly modelController: ModelController;

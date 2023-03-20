@@ -1,4 +1,4 @@
-import Ball from './ball';
+import Ball from "./Ball"
 import GameObject, { Bouncy } from './game';
 import { checkIntervalsIntersect } from './Breakout';
 

@@ -1,8 +1,8 @@
-import Ball from './ball';
-import Paddle from './paddle';
-import Brick from './brick';
-import ScoreObject, { Score } from './score';
-import Wall from './wall';
+import Ball from './Ball';
+import Paddle from './Paddle';
+import Brick from './Brick';
+import ScoreObject, { Score } from './Score';
+import Wall from './Wall';
 
 const createBricks = () => {
     const bricks: Brick[][] = [];
