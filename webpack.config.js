@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require("path")
 
 module.exports = {
   // モード値を production に設定すると最適化された状態で、
@@ -9,6 +10,9 @@ module.exports = {
 
   // メインとなるJavaScriptファイル（エントリーポイント）
   entry: "./src/ts/main.ts",
+  output: {
+    path: path.resolve(__dirname, './dist'),
+  },
   module: {
     rules: [
       {
