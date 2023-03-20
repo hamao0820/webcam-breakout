@@ -7,12 +7,16 @@
         <title>Webcam Breakout</title>
     </head>
     <body>
-        <canvas id="game" width="480" height="380"></canvas>
+        <canvas id="game" width="480" height="350"></canvas>
         <div class="button-container">
-            <div>
-                <button class="start" id="start-button" disabled>始める</button>
-                <button class="retry" id="retry-button" disabled>やり直し</button>
-            </div>
+            <button class="start" id="start-button" disabled>
+                <span class="icon">play_circle</span>
+                <span class="button-text">play</span>
+            </button>
+            <button class="retry" id="retry-button" disabled>
+                <span class="icon">replay</span>
+                <span class="button-text">replay</span>
+            </button>
         </div>
         <div class="controller-panels">
             <div class="panel">
@@ -100,8 +104,8 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="arrow">arrow_circle_left</div>
-                        <div class="arrow">arrow_circle_right</div>
+                        <div class="arrow icon">arrow_circle_left</div>
+                        <div class="arrow icon">arrow_circle_right</div>
                         <div class="thumb-box" id="thumb-box-right">
                             <div class="data-size-area">
                                 <span class="data-size" id="right-size">0</span>

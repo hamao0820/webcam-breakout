@@ -55,7 +55,6 @@
         justify-content: center;
         align-items: center;
         font-family: "Material Icons";
-        font-size: 50px;
         img {
             width: $arrow-size;
             height: $arrow-size;
@@ -70,15 +69,28 @@
 }
 
 .button-container {
-    margin-top: 30px;
+    margin: 5px 10px;
     width: 100vw;
     display: flex;
     justify-content: center;
-
     button {
         font-size: large;
+        background: none;
+        border: none;
         margin: 0 30px;
-        padding: 5px;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        .button-text {
+            border-bottom: 2px solid #484848;
+            border-top: 2px solid #484848;
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 6px 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
     }
 }
 
@@ -118,7 +130,6 @@
                     align-items: center;
                     border: none;
                     padding: 0;
-                    cursor: pointer;
                     border-radius: 5%;
 
                     .button-text {
@@ -131,9 +142,6 @@
                         padding: 6px 12px;
                         text-align: left;
                         white-space: nowrap;
-                    }
-                    .icon {
-                        font-size: 50px;
                     }
                 }
             }
@@ -231,4 +239,12 @@
 
 .icon {
     font-family: "Material Icons";
+    font-size: 60px;
+}
+
+button {
+    cursor: pointer;
+    &:disabled {
+        cursor: not-allowed;
+    }
 }
