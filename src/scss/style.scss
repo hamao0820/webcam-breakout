@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 * {
     margin: 0;
     padding: 0;
@@ -13,14 +14,17 @@
         transform: scaleX(-1);
         -webkit-transform: scaleX(-1);
     }
+    height: 180px;
 }
 
 #controller {
     display: flex;
     align-items: center;
+    margin-top: 30px;
     .thumb-box {
         $thumb-size: 128px;
         width: $thumb-size;
+        padding: 5px 10px;
         background-color: rgba(255, 255, 255, 0);
         button {
             padding: 0;
@@ -37,6 +41,11 @@
         $arrow-size: 64px;
         width: $arrow-size;
         height: $arrow-size;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Material Icons";
+        font-size: 50px;
         img {
             width: $arrow-size;
             height: $arrow-size;
@@ -73,7 +82,7 @@
         flex: 1;
         justify-content: center;
         align-items: space-between;
-        padding: 30px 10px 30px;
+        padding: 20px;
 
         &:first-child {
             border-right: 1px dashed #565656;
@@ -113,6 +122,71 @@
                     text-align: end;
                 }
             }
+        }
+    }
+}
+
+.hyper-params {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown {
+    width: 110px;
+    margin-bottom: 10px;
+
+    label {
+        // color: #777;
+        font-size: 11px;
+        display: block;
+        font-weight: 300;
+        line-height: 1;
+    }
+
+    .select {
+        position: relative;
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: none;
+            border: none;
+            border-bottom: solid 1px #313131;
+            border-radius: 0;
+            color: #c9c9c9;
+            display: block;
+            font-size: 12px;
+            outline: none;
+            padding: 6px 0;
+            width: 100%;
+
+            option {
+                font-weight: normal;
+                display: block;
+                white-space: nowrap;
+                min-height: 1.2em;
+                padding: 0px 2px 1px;
+            }
+        }
+        &::after {
+            content: "arrow_drop_down";
+            color: #999;
+            font-family: "Material Icons";
+            font-weight: normal;
+            font-style: normal;
+            font-size: 18px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            position: absolute;
+            right: 0;
+            top: 6px;
+            pointer-events: none;
         }
     }
 }
