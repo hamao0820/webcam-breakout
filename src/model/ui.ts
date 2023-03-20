@@ -37,7 +37,7 @@ class Ui {
             this.setTrainStatus(`Loss: ${loss}`);
         });
         this.modelController.on("modelInit", this.doneLoading.bind(this));
-        this.modelController.on("trainDone", this.enablePredict.bind(this));
+        this.modelController.on("trainDone", this.enableStart.bind(this));
         this.modelController.on("predict", this.highlightCorrectAnswer.bind(this));
         const paddleOperate = ({ classId }: { classId: 0 | 1 }) => {
             this.breakout.paddleOperate(classId);
@@ -60,6 +60,11 @@ class Ui {
         });
         const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
         const buttonRetry = this.getElementByIdAndCheckExists<HTMLButtonElement>("retry-button");
+
+        const buttonReset = this.getElementByIdAndCheckExists<HTMLButtonElement>("reset-button");
+        const thumbContextLeft = this.thumbCanvasLeft.getContext("2d");
+        const thumbContextRight = this.thumbCanvasRight.getContext("2d");
+        if (!thumbContextLeft || !thumbContextRight) throw Error("コンテキストが存在しません");
         tf.ready().then(() => {
             const buttonHandlerLeft = async () => {
                 const label = 0;
@@ -82,13 +87,8 @@ class Ui {
             const start = () => {
                 this.breakout.start();
             };
-            const reset = () => {
-                buttonStart.removeEventListener("click", start.bind(this));
-                buttonRetry.removeEventListener("click", retry.bind(this));
-            };
             const retry = () => {
                 this.breakout.gameOver();
-                reset();
                 this.breakout = this.breakout.init();
                 this.breakout.on("step", async () => {
                     const image = await this.webcam.getProcessedImage();
@@ -105,6 +105,20 @@ class Ui {
                 buttonStart.removeAttribute("disabled");
                 buttonRetry.setAttribute("disabled", "true");
             });
+
+            const reset = () => {
+                const thumbBoxLeft = this.getElementByIdAndCheckExists("thumb-box-left");
+                const thumbBoxRight = this.getElementByIdAndCheckExists("thumb-box-right");
+                thumbBoxLeft.classList.remove("predicted");
+                thumbBoxRight.classList.remove("predicted");
+                this.buttonTrain.setAttribute("disabled", "true");
+                this.setTrainStatus("学習");
+                this.modelController.resetDataset();
+                thumbContextLeft.clearRect(0, 0, this.thumbCanvasLeft.width, this.thumbCanvasLeft.height);
+                thumbContextRight.clearRect(0, 0, this.thumbCanvasRight.width, this.thumbCanvasRight.height);
+            };
+
+            buttonReset.addEventListener("click", reset);
         });
     }
 
@@ -160,6 +174,8 @@ class Ui {
 
     private async buttonHandler(canvas: HTMLCanvasElement, label: number) {
         this.mouseDown = true;
+        const buttonReset = this.getElementByIdAndCheckExists<HTMLButtonElement>("reset-button");
+        buttonReset.removeAttribute("disabled");
         this.buttonTrain.removeAttribute("disabled");
         const forThumb = async () => {
             const image = await this.webcam.getImage();
@@ -195,7 +211,7 @@ class Ui {
         trainStatusElement.innerHTML = status;
     }
 
-    private enablePredict() {
+    private enableStart() {
         const buttonStart = this.getElementByIdAndCheckExists<HTMLButtonElement>("start-button");
         buttonStart.removeAttribute("disabled");
     }

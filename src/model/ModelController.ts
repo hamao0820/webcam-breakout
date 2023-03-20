@@ -94,5 +94,9 @@ class ModelController extends EventEmitter {
         if (classId !== 0 && classId !== 1) throw Error("classIdが不正です");
         this.emit("predict", { classId: classId });
     }
+
+    resetDataset() {
+        this.controllerDataset.reset();
+    }
 }
 export default ModelController;

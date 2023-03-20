@@ -33,6 +33,13 @@ class ControllerDataset {
         }
     }
 
+    reset() {
+        if (this.#xs) this.#xs.dispose();
+        if (this.#ys) this.#ys.dispose();
+        this.#xs = null;
+        this.#ys = null;
+    }
+
     get classSizes() {
         if (!this.#ys) return new Array(this.numClasses).fill(0);
         const ysData = this.#ys.arraySync() as number[][];
