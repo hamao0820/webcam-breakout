@@ -1,4 +1,4 @@
-import Ball from './ball';
+import Ball from "./ball";
 
 export default interface GameObject {
     x: number;

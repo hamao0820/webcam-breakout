@@ -10,8 +10,8 @@ class Lives {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        ctx.font = '16px Arial';
-        ctx.fillStyle = '#0095DD';
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
         ctx.fillText(`Lives: ${this.lives}`, this.x, this.y);
     }
 }

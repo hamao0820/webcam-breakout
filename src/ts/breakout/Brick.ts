@@ -1,6 +1,7 @@
-import Ball from "./Ball"
-import GameObject, { Bouncy } from './game';
-import { checkIntervalsIntersect } from './Breakout';
+import type Ball from "./Ball";
+import { checkIntervalsIntersect } from "./Breakout";
+import type GameObject from "./game";
+import type { Bouncy } from "./game";
 
 class Brick implements GameObject, Bouncy {
     x: number;
@@ -20,7 +21,7 @@ class Brick implements GameObject, Bouncy {
         if (!this.isRemain) return;
         ctx.beginPath();
         ctx.rect(this.x, this.y, this.width, this.height);
-        ctx.fillStyle = '#0095DD';
+        ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
     }

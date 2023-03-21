@@ -13,8 +13,8 @@ class ScoreObject {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        ctx.font = '16px Arial';
-        ctx.fillStyle = '#0095DD';
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
         ctx.fillText(`Score: ${this.score.value}`, this.x, this.y);
     }
 }
