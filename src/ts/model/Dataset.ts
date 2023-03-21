@@ -1,5 +1,5 @@
 import * as tf from "@tensorflow/tfjs";
-import { Tensor4D, Tensor2D } from "@tensorflow/tfjs";
+import type { Tensor4D, Tensor2D } from "@tensorflow/tfjs";
 
 class Dataset {
     private readonly numClasses: number;
