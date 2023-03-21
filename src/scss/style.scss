@@ -61,19 +61,6 @@ header {
     margin: 0 auto;
 }
 
-.webcam-container {
-    #monitor {
-        height: 160px;
-        width: 160px;
-        padding: 10px;
-        background: gray;
-        border-radius: 5%;
-        transform: scaleX(-1);
-        -webkit-transform: scaleX(-1);
-    }
-    height: 180px;
-}
-
 @keyframes shine {
     0% {
         background-position: 100% 50%;
@@ -140,7 +127,6 @@ header {
 }
 
 .button-container {
-    margin: 5px 10px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -177,8 +163,7 @@ header {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 5px;
-
+        padding: 0 5px;
         &:first-child {
             border-right: 1px dashed #565656;
         }
@@ -189,8 +174,7 @@ header {
             align-items: center;
             width: 100%;
             width: 500px;
-            padding: 3px;
-            margin: 5px 0;
+            margin: 3px 0 0;
 
             &.button-row {
                 justify-content: center;
@@ -219,6 +203,20 @@ header {
 
             &.params-webcam-row {
                 justify-content: space-around;
+                .webcam-container {
+                    position: relative;
+                    left: 20px;
+                    #monitor {
+                        height: 160px;
+                        width: 160px;
+                        padding: 10px;
+                        background: gray;
+                        border-radius: 5%;
+                        transform: scaleX(-1);
+                        -webkit-transform: scaleX(-1);
+                    }
+                    height: 180px;
+                }
             }
 
             &.controller-row {
