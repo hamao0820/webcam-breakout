@@ -9,9 +9,13 @@ module.exports = {
   mode: "development",
 
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: "./src/ts/main.ts",
+  entry: {
+    main: ["./src/ts/main.ts", "./src/templates/index.html", "./src/scss/style.scss"],
+    process: [ "./src/templates/process.html", "./src/scss/process.scss"]
+  },
   output: {
     path: path.resolve(__dirname, './dist'),
+    filename: "./[name].js",
   },
   module: {
     rules: [
@@ -57,9 +61,18 @@ module.exports = {
     // new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/templates/index.html",
+      filename: "index.html",
+      output: "index.html",
+      chunks: ["main"]
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/templates/process.html",
+      filename: "process.html",
+      output: "process.html",
+      chunks: ["process"]
     }),
     new MiniCssExtractPlugin({
-      filename: "./css/style.css",
+      filename: "./css/[name].css",
     }),
   ],
   resolve: {

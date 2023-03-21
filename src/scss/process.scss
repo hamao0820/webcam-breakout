@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.body {
+    width: 90vw;
+    margin: 0 auto;
+}
+
+.main {
+    text-align: center;
+    font-size: 2em;
+    background: linear-gradient(transparent 60%, #c8f1ff 60%);
+    font-family: "ヒラギノ丸ゴ Pro";
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.process-list {
+    counter-reset: list;
+    list-style-type: none;
+    font: 14px/1.6 "arial narrow", sans-serif;
+    padding: 1.5em;
+    li {
+        position: relative;
+        padding: 7px 5px 7px 40px;
+        margin: 7px 0 10px;
+        font-weight: bold;
+        font-size: 20px;
+        border-bottom: dashed 2px #f6a38b;
+        &::before {
+            counter-increment: list;
+            content: counter(list);
+            position: absolute;
+            left: 0px;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            color: #fff;
+            background: #f6a38b;
+            border-radius: 50%;
+            top: 50%;
+            -moz-transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+        }
+    }
+}

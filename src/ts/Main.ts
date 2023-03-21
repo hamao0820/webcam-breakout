@@ -1,4 +1,3 @@
-import "../scss/style.scss";
 import Breakout from "./breakout/Breakout";
 import ModelController from "./model/ModelController";
 import Ui from "./model/Ui";
