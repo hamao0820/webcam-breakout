@@ -4,6 +4,7 @@ import Webcam from "./Webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
+
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
@@ -155,6 +156,71 @@ class Ui {
                 e.clientX <= rect.left + rect.width;
             if (!inDialog) {
                 dialogProcess.close();
+            }
+        });
+
+        const detailLearningRate = this.getElementByIdAndCheckExists<HTMLSpanElement>("detail-learning-rate");
+        const detailBatchSize = this.getElementByIdAndCheckExists<HTMLSpanElement>("detail-batch-size-fraction");
+        const detailEpochs = this.getElementByIdAndCheckExists<HTMLSpanElement>("detail-epochs");
+        const detailDenseUnits = this.getElementByIdAndCheckExists<HTMLSpanElement>("detail-dense-units");
+        const dialogLearningRate = this.getElementByIdAndCheckExists<HTMLDialogElement>("dialog-learning-rate");
+        const dialogBatchSize = this.getElementByIdAndCheckExists<HTMLDialogElement>("dialog-batch-size-fraction");
+        const dialogEpochs = this.getElementByIdAndCheckExists<HTMLDialogElement>("dialog-epochs");
+        const dialogDenseUnits = this.getElementByIdAndCheckExists<HTMLDialogElement>("dialog-dense-units");
+        detailLearningRate.addEventListener("click", () => {
+            dialogLearningRate.showModal();
+        });
+        detailBatchSize.addEventListener("click", () => {
+            dialogBatchSize.showModal();
+        });
+        detailEpochs.addEventListener("click", () => {
+            dialogEpochs.showModal();
+        });
+        detailDenseUnits.addEventListener("click", () => {
+            dialogDenseUnits.showModal();
+        });
+        dialogLearningRate.addEventListener("click", (e) => {
+            const rect = dialogLearningRate.getBoundingClientRect();
+            const inDialog =
+                rect.top <= e.clientY &&
+                e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX &&
+                e.clientX <= rect.left + rect.width;
+            if (!inDialog) {
+                dialogLearningRate.close();
+            }
+        });
+        dialogBatchSize.addEventListener("click", (e) => {
+            const rect = dialogBatchSize.getBoundingClientRect();
+            const inDialog =
+                rect.top <= e.clientY &&
+                e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX &&
+                e.clientX <= rect.left + rect.width;
+            if (!inDialog) {
+                dialogBatchSize.close();
+            }
+        });
+        dialogEpochs.addEventListener("click", (e) => {
+            const rect = dialogEpochs.getBoundingClientRect();
+            const inDialog =
+                rect.top <= e.clientY &&
+                e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX &&
+                e.clientX <= rect.left + rect.width;
+            if (!inDialog) {
+                dialogEpochs.close();
+            }
+        });
+        dialogDenseUnits.addEventListener("click", (e) => {
+            const rect = dialogDenseUnits.getBoundingClientRect();
+            const inDialog =
+                rect.top <= e.clientY &&
+                e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX &&
+                e.clientX <= rect.left + rect.width;
+            if (!inDialog) {
+                dialogDenseUnits.close();
             }
         });
     }
