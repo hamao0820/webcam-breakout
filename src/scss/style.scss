@@ -11,12 +11,17 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 2px;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    background: #fff;
     .logo {
         margin: 0 30px;
         font-size: 30px;
         font-weight: bold;
         font-style: italic;
         font-family: "Gill Sans", sans-serif;
+        white-space: nowrap;
     }
     #how-to-play {
         margin: 0 30px;
@@ -55,10 +60,11 @@ header {
 
 .body {
     width: $body-width;
+    // width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0 auto;
+    margin: 35px auto 30px;
 }
 
 @keyframes shine {
@@ -323,5 +329,24 @@ button {
     cursor: pointer;
     &:disabled {
         cursor: not-allowed;
+    }
+}
+
+footer {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: calc(50% – 50vw);
+    position: fixed;
+    bottom: 0;
+    padding: 1px 0;
+    background: gray;
+    .copy {
+        margin: 0 auto;
+    }
+    .link {
+        position: absolute;
+        right: 10px;
     }
 }
