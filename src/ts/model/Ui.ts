@@ -4,7 +4,6 @@ import Webcam from "./Webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
-
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
@@ -146,6 +145,17 @@ class Ui {
         });
         buttonClose.addEventListener("click", () => {
             dialogProcess.close();
+        });
+        dialogProcess.addEventListener("click", (e) => {
+            const rect = dialogProcess.getBoundingClientRect();
+            const inDialog =
+                rect.top <= e.clientY &&
+                e.clientY <= rect.top + rect.height &&
+                rect.left <= e.clientX &&
+                e.clientX <= rect.left + rect.width;
+            if (!inDialog) {
+                dialogProcess.close();
+            }
         });
     }
 
