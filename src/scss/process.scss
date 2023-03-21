@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,100,0,0");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 body {
     margin: 0;
     padding: 0;
@@ -10,10 +12,11 @@ body {
 
 .main {
     text-align: center;
-    font-size: 2em;
+    font-size: 3em;
     background: linear-gradient(transparent 60%, #c8f1ff 60%);
     font-family: "ヒラギノ丸ゴ Pro";
     font-style: italic;
+    font-weight: bold;
     white-space: nowrap;
 }
 
@@ -22,31 +25,47 @@ body {
     list-style-type: none;
     font: 14px/1.6 "arial narrow", sans-serif;
     padding: 1.5em;
-    li {
-        position: relative;
+    li.main-process {
+        // position: relative;
         padding: 7px 5px 7px 40px;
         margin: 7px 0 10px;
         font-weight: bold;
         font-size: 20px;
         border-bottom: dashed 2px #f6a38b;
-        &::before {
-            counter-increment: list;
-            content: counter(list);
-            position: absolute;
-            left: 0px;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            color: #fff;
-            background: #f6a38b;
-            border-radius: 50%;
-            top: 50%;
-            -moz-transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            -o-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
+        font-family: "ヒラギノ丸ゴ Pro";
+        .process-title {
+            vertical-align: middle;
+            font-size: 1.5em;
+            &::before {
+                position: relative;
+                bottom: 1px;
+                counter-increment: list;
+                font-size: 0.9em;
+                text-align: center;
+                content: counter(list);
+                display: inline-block;
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                color: #fff;
+                background: #f6a38b;
+                border-radius: 50%;
+            }
+        }
+        .sub-process {
+            list-style: none;
+            vertical-align: middle;
+            font-size: 1.2rem;
         }
     }
+}
+
+.icon {
+    position: relative;
+    bottom: 1px;
+    vertical-align: middle;
+}
+.warning {
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 48;
+    color: orange;
 }
