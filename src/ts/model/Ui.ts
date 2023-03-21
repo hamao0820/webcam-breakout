@@ -4,6 +4,7 @@ import Webcam from "./Webcam";
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor3D, Tensor4D } from "@tensorflow/tfjs";
 
+
 class Ui {
     private readonly thumbCanvasLeft: HTMLCanvasElement;
     private readonly thumbCanvasRight: HTMLCanvasElement;
@@ -135,6 +136,16 @@ class Ui {
             };
 
             buttonReset.addEventListener("click", reset);
+        });
+
+        const dialogProcess = this.getElementByIdAndCheckExists<HTMLDialogElement>("process-dialog");
+        const howToPlayBlock = this.getElementByIdAndCheckExists<HTMLDivElement>("how-to-play");
+        const buttonClose = this.getElementByIdAndCheckExists<HTMLButtonElement>("close-button");
+        howToPlayBlock.addEventListener("click", () => {
+            dialogProcess.showModal();
+        });
+        buttonClose.addEventListener("click", () => {
+            dialogProcess.close();
         });
     }
 
