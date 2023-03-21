@@ -1,6 +1,7 @@
 import * as tf from "@tensorflow/tfjs";
+import type { Tensor4D } from "@tensorflow/tfjs";
 import * as tfd from "@tensorflow/tfjs-data";
-import { WebcamIterator } from "@tensorflow/tfjs-data/dist/iterators/webcam_iterator";
+import type { WebcamIterator } from "@tensorflow/tfjs-data/dist/iterators/webcam_iterator";
 
 class Webcam {
     #webcam: Promise<WebcamIterator>;
@@ -17,7 +18,7 @@ class Webcam {
 
     async getProcessedImage() {
         const image = await this.getImage();
-        const processedImage = tf.tidy<tf.Tensor4D>(() => image.expandDims(0).toFloat().div(127).sub(1));
+        const processedImage = tf.tidy<Tensor4D>(() => image.expandDims(0).toFloat().div(127).sub(1));
         image.dispose();
         return processedImage;
     }

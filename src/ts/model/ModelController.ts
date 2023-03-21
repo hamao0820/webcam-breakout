@@ -45,7 +45,7 @@ class ModelController extends EventEmitter {
         return super.emit(event, kwargs);
     }
 
-    embedding(image: tf.Tensor4D) {
+    embedding(image: Tensor4D) {
         if (!Model.isReady) throw Error("modelが初期化されていません");
         return Model.embedding(image);
     }
