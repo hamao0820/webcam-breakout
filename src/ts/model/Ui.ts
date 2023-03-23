@@ -104,7 +104,7 @@ class Ui {
                 this.breakout.start();
             };
             const retry = () => {
-                this.breakout.gameOver();
+                this.breakout.done();
                 this.breakout = this.breakout.init();
                 this.breakout.on("step", async () => {
                     const image = await this.webcam.getProcessedImage();

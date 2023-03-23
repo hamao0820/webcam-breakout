@@ -91,9 +91,13 @@ class Breakout extends EventEmitter {
         this.step();
     }
 
-    gameOver() {
+    done() {
         this.isDone = true;
-        console.log("GAME OVER")
+    }
+
+    gameOver() {
+        this.done();
+        alert("GAME OVER");
     }
 
     paddleOperate(classId: 0 | 1) {
