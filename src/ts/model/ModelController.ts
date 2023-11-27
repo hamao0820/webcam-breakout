@@ -1,7 +1,7 @@
 import ControllerDataset from "./Dataset";
 import Model from "./Model";
 import * as tf from "@tensorflow/tfjs";
-import type { Tensor1D, Tensor4D } from "@tensorflow/tfjs";
+import type { Tensor1D, Tensor2D, Tensor4D } from "@tensorflow/tfjs";
 import { EventEmitter } from "events";
 
 export interface ModelControllerEvent {
@@ -88,7 +88,7 @@ class ModelController extends EventEmitter {
 
     async predict(image: Tensor4D) {
         if (!this.model) throw Error("先に学習をしてください。`model.train(units: number)`");
-        const predictions = this.model.predict(Model.embedding(image)) as Tensor1D;
+        const predictions = this.model.predict(Model.embedding(image) as Tensor2D) as Tensor1D;
         const classId = tf.tidy(() => Number(predictions.as1D().argMax().dataSync()));
         predictions.dispose();
         if (classId !== 0 && classId !== 1) throw Error("classIdが不正です");
