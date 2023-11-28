@@ -7,6 +7,10 @@
         <title>Webcam Breakout</title>
     </head>
     <body>
+        <div id="loading-overlay">
+            <div id="loading-spinner"></div>
+            <div id="loading-text">Loading...</div>
+        </div>
         <dialog id="process-dialog">
             <button id="close-button">閉じる</button>
             <iframe src="./process.html" frameborder="0"></iframe>
@@ -202,7 +206,6 @@
                         <!-- /.hyper-param -->
                         <div class="webcam-container">
                             <video id="monitor" width="224px" height="224px"></video>
-                            <div id="loading-status">Loading mobilenet...</div>
                         </div>
                     </div>
                 </div>

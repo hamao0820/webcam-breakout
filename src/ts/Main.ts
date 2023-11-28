@@ -17,8 +17,26 @@ class Main {
     }
 }
 
-(async () => {
+(() => {
     const main = new Main();
-    await main.init();
-    console.log("初期化完了");
+    document.addEventListener("DOMContentLoaded", async () => {
+        const init = async () => {
+            await main.init();
+            console.log("初期化完了");
+        };
+
+        const showLoading = () => {
+            document.getElementById("loading-overlay")!.style.display = "flex";
+        };
+
+        const hideLoading = () => {
+            document.getElementById("loading-overlay")!.style.display = "none";
+        };
+
+        showLoading();
+        console.log("ローディング中");
+        await init();
+        hideLoading();
+        console.log("ローディング完了");
+    });
 })();

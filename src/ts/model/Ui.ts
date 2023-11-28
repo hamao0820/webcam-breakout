@@ -51,7 +51,6 @@ class Ui {
         this.modelController.on("batchEnd", ({ loss }) => {
             this.setTrainStatus(`Loss: ${loss}`);
         });
-        this.modelController.on("modelInit", this.doneLoading.bind(this));
         this.modelController.on("trainDone", this.enableStart.bind(this));
         this.modelController.on("predict", this.highlightCorrectAnswer.bind(this));
         const paddleOperate = ({ classId }: { classId: 0 | 1 }) => {
@@ -248,11 +247,6 @@ class Ui {
     private getDenseUnits() {
         const denseUnitsElement = this.getElementByIdAndCheckExists<HTMLSelectElement>("dense-units");
         return +denseUnitsElement.value;
-    }
-
-    private doneLoading() {
-        const statusElement = this.getElementByIdAndCheckExists<HTMLDivElement>("loading-status");
-        statusElement.style.setProperty("display", "none");
     }
 
     private highlightCorrectAnswer({ classId }: { classId: number }) {
