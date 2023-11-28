@@ -1,31 +1,26 @@
 import * as tf from "@tensorflow/tfjs";
 import type { Tensor4D } from "@tensorflow/tfjs";
-import type { ContainerArgs } from "@tensorflow/tfjs-layers/dist/engine/container";
 
-export class TruncatedMobileNet extends tf.LayersModel {
-    private constructor(args: ContainerArgs) {
-        super(args);
-    }
-
+export class MobileNet extends tf.GraphModel {
     static async build() {
-        const mobilenet = await tf.loadLayersModel(
-            "https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json"
+        const mobilenet = await tf.loadGraphModel(
+            "https://www.kaggle.com/models/google/mobilenet-v3/frameworks/TfJs/variations/small-100-224-feature-vector/versions/1",
+            { fromTFHub: true }
         );
-        const layer = mobilenet.getLayer("conv_pw_13_relu");
-        return new TruncatedMobileNet({ inputs: mobilenet.inputs, outputs: layer.output });
+        return mobilenet;
     }
 }
 
 class Model extends tf.Sequential {
     private static readonly NUM_CLASSES = 2;
-    private static readonly truncatedMobileNetPromise: Promise<TruncatedMobileNet> = TruncatedMobileNet.build();
-    private static truncatedMobileNet: TruncatedMobileNet;
+    private static readonly mobileNetPromise: Promise<MobileNet> = MobileNet.build();
+    private static mobileNet: MobileNet;
 
-    private constructor(truncatedMobileNet: TruncatedMobileNet, units: number) {
+    private constructor(units: number) {
         super();
-        this.add(tf.layers.flatten({ inputShape: truncatedMobileNet.outputs[0].shape.slice(1) }));
         this.add(
             tf.layers.dense({
+                inputShape: [1024],
                 units: units,
                 activation: "relu",
                 kernelInitializer: "varianceScaling",
@@ -43,20 +38,20 @@ class Model extends tf.Sequential {
     }
 
     static async load() {
-        this.truncatedMobileNet = await this.truncatedMobileNetPromise;
+        this.mobileNet = await this.mobileNetPromise;
     }
 
     static async build(units: number) {
         if (!this.isReady) throw Error("モデルがロードされていません");
-        return new Model(this.truncatedMobileNet, units);
+        return new Model(units);
     }
 
     static embedding(image: Tensor4D) {
-        return this.truncatedMobileNet.predict(image);
+        return this.mobileNet.predict(image);
     }
 
     static isReady() {
-        return !!this.truncatedMobileNet;
+        return !!this.mobileNet;
     }
 }
 
