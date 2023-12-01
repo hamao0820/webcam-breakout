@@ -18,7 +18,7 @@ class Webcam {
 
     async getProcessedImage() {
         const image = await this.getImage();
-        const processedImage = tf.tidy<Tensor4D>(() => image.expandDims(0).toFloat().div(127).sub(1));
+        const processedImage = tf.tidy<Tensor4D>(() => image.expandDims(0).toFloat().div(255));
         image.dispose();
         return processedImage;
     }
